@@ -5,8 +5,14 @@
 // CSCI 5611 Vector 2 Library [Example]
 // Stephen J. Guy <sjguy@umn.edu>
 
-public class Vec3 {
+public static class Vec3 {
   public float x, y, z;
+  
+  public Vec3(){
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+  }
   
   public Vec3(float x, float y, float z){
     this.x = x;
@@ -26,8 +32,8 @@ public class Vec3 {
     return x*x+y*y+z*z;
   }
   
-  public Vec3 plus(Vec3 rhs){
-    return new Vec3(x+rhs.x, y+rhs.y, z+rhs.z);
+  public static Vec3 add(Vec3 rhs, Vec3 lhs) {
+    return new Vec3(rhs.x+lhs.x, rhs.y+lhs.y, rhs.z+lhs.z);
   }
   
   public void add(Vec3 rhs){
@@ -36,24 +42,48 @@ public class Vec3 {
     z += rhs.z;
   }
   
-  public Vec3 minus(Vec3 rhs){
-    return new Vec3(x-rhs.x, y-rhs.y, z-rhs.z);
+  public static Vec3 sub(Vec3 rhs, Vec3 lhs){
+    return new Vec3(rhs.x-lhs.x, rhs.y-lhs.y, rhs.z-lhs.z);
   }
   
-  public void subtract(Vec3 rhs){
+  public void sub(Vec3 rhs){
     x -= rhs.x;
     y -= rhs.y;
     z -= rhs.z;
   }
   
-  public Vec3 times(float rhs){
-    return new Vec3(x*rhs, y*rhs, z*rhs);
+  public static Vec3 mul(Vec3 rhs, float scalar){
+    return new Vec3(rhs.x*scalar, rhs.y*scalar, rhs.z*scalar);
   }
   
-  public void mul(float rhs){
-    x *= rhs;
-    y *= rhs;
-    z *= rhs;
+  public void mul(float scalar){
+    x *= scalar;
+    y *= scalar;
+    z *= scalar;
+  }
+  
+  public void clamp(float minL, float maxL){
+    // Max
+    if (x > maxL){
+      x = maxL;
+    }
+    if (y > maxL){
+      y = maxL;
+    }
+    if (z > maxL){
+      z = maxL;
+    }
+    
+    // Min
+    if (x < minL){
+      x = minL;
+    }
+    if (y < minL){
+      y = minL;
+    }
+    if (z < minL){
+      z = minL;
+    }
   }
   
   public void clampToLength(float maxL){
@@ -100,7 +130,7 @@ public class Vec3 {
 }
 
 Vec3 interpolate(Vec3 a, Vec3 b, float t){
-  return a.plus((b.minus(a)).times(t));
+  return Vec3.add(a, (Vec3.mul(Vec3.sub(b, a), t)));
 }
 
 float interpolate(float a, float b, float t){
@@ -112,7 +142,7 @@ float dot(Vec3 a, Vec3 b){
 }
 
 Vec3 projAB(Vec3 a, Vec3 b){
-  return b.times(a.x*b.x + a.y*b.y);
+  return Vec3.mul(b, (a.x*b.x + a.y*b.y));
 }
 
 Vec3 cross(Vec3 a, Vec3 b){
