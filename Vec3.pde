@@ -142,7 +142,7 @@ float dot(Vec3 a, Vec3 b){
 }
 
 Vec3 projAB(Vec3 a, Vec3 b){
-  return Vec3.mul(b, (a.x*b.x + a.y*b.y));
+  return Vec3.mul(b, (a.x*b.x + a.y*b.y + a.z*b.z));
 }
 
 Vec3 cross(Vec3 a, Vec3 b){

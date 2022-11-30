@@ -6,7 +6,7 @@
 // Stephen J. Guy <sjguy@umn.edu>
 
 public static class Vec4 {
-  public float x, y, z;
+  public float x, y, z, w;
   
   public Vec4(){
   }
@@ -15,48 +15,52 @@ public static class Vec4 {
     this.x = x;
     this.y = y;
     this.z = z;
+    this.w = w;
   }
   
   public String toString(){
-    return "(" + x+ "," + y + "," + z + ")";
+    return "(" + x+ "," + y + "," + z + "," + w + ")";
   }
   
   public float length(){
-    return sqrt(x*x+y*y+z*z);
+    return sqrt(x*x+y*y+z*z+w*w);
   }
   
   public float lengthSqr(){
-    return x*x+y*y+z*z;
+    return x*x+y*y+z*z+w*w;
   }
   
   public static Vec4 add(Vec4 rhs, Vec4 lhs) {
-    return new Vec4(rhs.x+lhs.x, rhs.y+lhs.y, rhs.z+lhs.z,0);//FIx
+    return new Vec4(rhs.x+lhs.x, rhs.y+lhs.y, rhs.z+lhs.z, rhs.w+lhs.w);
   }
   
   public void add(Vec4 rhs){
     x += rhs.x;
     y += rhs.y;
     z += rhs.z;
+    w += rhs.w;
   }
   
   public static Vec4 sub(Vec4 rhs, Vec4 lhs){
-    return new Vec4(rhs.x-lhs.x, rhs.y-lhs.y, rhs.z-lhs.z,0);//FIx
+    return new Vec4(rhs.x-lhs.x, rhs.y-lhs.y, rhs.z-lhs.z, rhs.w-lhs.w);
   }
   
   public void sub(Vec4 rhs){
     x -= rhs.x;
     y -= rhs.y;
     z -= rhs.z;
+    w -= rhs.w;
   }
   
   public static Vec4 mul(Vec4 rhs, float scalar){
-    return new Vec4(rhs.x*scalar, rhs.y*scalar, rhs.z*scalar,0);//FIx
+    return new Vec4(rhs.x*scalar, rhs.y*scalar, rhs.z*scalar,rhs.w*scalar);
   }
   
   public void mul(float scalar){
     x *= scalar;
     y *= scalar;
     z *= scalar;
+    w *= scalar;
   }
   
   public void clamp(float minL, float maxL){
@@ -70,6 +74,9 @@ public static class Vec4 {
     if (z > maxL){
       z = maxL;
     }
+    if (w > maxL){
+      w = maxL;
+    }
     
     // Min
     if (x < minL){
@@ -81,48 +88,56 @@ public static class Vec4 {
     if (z < minL){
       z = minL;
     }
+    if (w < minL){
+      w = minL;
+    }
   }
   
   public void clampToLength(float maxL){
-    float magnitude = sqrt(x*x + y*y + z*z);
+    float magnitude = sqrt(x*x + y*y + z*z + w*w);
     if (magnitude > maxL){
       x *= maxL/magnitude;
       y *= maxL/magnitude;
       z *= maxL/magnitude;
+      w *= maxL/magnitude;
     }
   }
   
   public void setToLength(float newL){
-    float magnitude = sqrt(x*x + y*y + z*z);
+    float magnitude = sqrt(x*x + y*y + z*z + w*w);
     x *= newL/magnitude;
     y *= newL/magnitude;
     z *= newL/magnitude;
+    w *= newL/magnitude;
   }
   
   public void normalize(){
-    float magnitude = sqrt(x*x + y*y + z*z);
+    float magnitude = sqrt(x*x + y*y + z*z + w*w);
     if (magnitude == 0) {
       x = 0;
       y = 0;
       z = 0;
+      w = 0;
     } else {
       x /= magnitude;
       y /= magnitude;
       z /= magnitude;
+      w /= magnitude;
     }
   }
   
   public Vec4 normalized(){
-    float magnitude = sqrt(x*x + y*y + z*z);
-    if (magnitude == 0) return new Vec4(0, 0, 0,0);//FIx
-    else return new Vec4(x/magnitude, y/magnitude, z/magnitude,0);//FIx
+    float magnitude = sqrt(x*x + y*y + z*z + w*w);
+    if (magnitude == 0) return new Vec4(0, 0, 0, 0); 
+    else return new Vec4(x/magnitude, y/magnitude, z/magnitude, w/magnitude); 
   }
   
   public float distanceTo(Vec4 rhs){
     float dx = rhs.x - x;
     float dy = rhs.y - y;
     float dz = rhs.z - z;
-    return sqrt(dx*dx + dy*dy + dz*dz);
+    float dw = rhs.w - w;
+    return sqrt(dx*dx + dy*dy + dz*dz + dw*dw);
   }
 }
 
@@ -130,13 +145,14 @@ Vec4 interpolate(Vec4 a, Vec4 b, float t){
   return Vec4.add(a, (Vec4.mul(Vec4.sub(b, a), t)));
 }
 float dot(Vec4 a, Vec4 b){
-  return a.x*b.x + a.y*b.y + a.z*b.z;
+  return a.x*b.x + a.y*b.y + a.z*b.z + a.w*b.w;
 }
 
 Vec4 projAB(Vec4 a, Vec4 b){
-  return Vec4.mul(b, (a.x*b.x + a.y*b.y));
+  return Vec4.mul(b, (a.x*b.x + a.y*b.y + a.z*b.z + a.w*b.w));
 }
 
-Vec4 cross(Vec4 a, Vec4 b){
-  return new Vec4(a.y*b.z - a.z*b.y, a.x*b.z - a.z*b.x, a.x*b.y - a.y*b.x, 0); //FIx
-}
+//DO IF NESSISARY
+//Vec4 cross(Vec4 a, Vec4 b){
+//  return new Vec4(a.y*b.z - a.z*b.y, a.x*b.z - a.z*b.x, a.x*b.y - a.y*b.x, 0);  
+//}
