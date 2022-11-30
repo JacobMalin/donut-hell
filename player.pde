@@ -9,8 +9,8 @@ class Player
 {
   public Player()
   {
-    position      = new Vec3( 480, 480, 480 ); // initial position
-    velocity      = new Vec3(); // initial velocity
+    position      = new Vec4( 480, 480, 480, 480 ); // initial position
+    velocity      = new Vec4(); // initial velocity
     theta         = 0.706; // rotation around Y axis. Starts with forward direction as ( 0, 0, -1 )
     phi           = 0.526; // rotation around X axis. Starts with up direction as ( 0, 1, 0 )
     moveSpeed     = 100;
@@ -19,10 +19,13 @@ class Player
     boostSpeed    = 10;  // extra speed boost for when you press shift
     radius        = 20; // distance for collision
     
+    // UI
+    bar = new Bar(this);
+    
     // dont need to change these
     shiftPressed = false;
-    negativeMovement = new PVector( 0, 0, 0 );
-    positiveMovement = new PVector( 0, 0, 0 );
+    negativeMovement = new Vec4( 0, 0, 0, 0 );
+    positiveMovement = new Vec4( 0, 0, 0, 0 );
     negativeTurn     = new PVector( 0, 0 ); // .x for theta, .y for phi
     positiveTurn     = new PVector( 0, 0 );
     fovy             = PI / 4;
@@ -30,6 +33,8 @@ class Player
     nearPlane        = 0.1;
     farPlane         = 10000;
   }
+  
+  float getW() {  return position.w;  };
   
   void Update(float dt)
   {
@@ -43,26 +48,29 @@ class Player
     // except that their theta and phi are named opposite
     float t = theta + PI / 2;
     float p = phi + PI / 2;
-    Vec3 forwardDir = new Vec3( sin( p ) * cos( t ),   0,         -sin( p ) * sin ( t ) );
-    Vec3 upDir      = new Vec3( 0,                     1,          0 );
-    Vec3 rightDir   = new Vec3( cos( theta ),          0,          -sin( theta ) );
+    Vec4 forwardDir = new Vec4( sin( p ) * cos( t ),   0,   -sin( p ) * sin ( t ),   0 );
+    Vec4 upDir      = new Vec4( 0,                     1,   0,                       0 );
+    Vec4 rightDir   = new Vec4( cos( theta ),          0,   -sin( theta ),           0 );
+    Vec4 zagDir     = new Vec4( 0,                     0,   0,                       1 );
     
     velocity.x = moveSpeed * (negativeMovement.x + positiveMovement.x);
-    velocity.y += gravity.y * dt;
+    velocity.y += gravity.y * dt; // The y axis is special and does not have a constant velocity
     velocity.z = moveSpeed * (negativeMovement.z + positiveMovement.z);
+    velocity.w = moveSpeed * (negativeMovement.w + positiveMovement.w);
     
     if (shiftPressed) moveSpeed *= boostSpeed;
-    position.add( Vec3.mul( forwardDir, velocity.z * dt ) );
-    position.add( Vec3.mul( upDir,      velocity.y * dt ) );
-    position.add( Vec3.mul( rightDir,   velocity.x * dt ) );
+    position.add( Vec4.mul( rightDir,   velocity.x * dt ) );
+    position.add( Vec4.mul( upDir,      velocity.y * dt ) );
+    position.add( Vec4.mul( forwardDir, velocity.z * dt ) );
+    position.add( Vec4.mul( zagDir,     velocity.w * dt ) );
     if (shiftPressed) moveSpeed /= boostSpeed;
 
     
     // Collision
     float boundingWall = wallLen/2 - radius;
     if (position.y > boundingWall) velocity.y = 0;
-    if (position.x > boundingWall  || position.y > boundingWall  || position.z > boundingWall || // Pos
-        position.x < -boundingWall || position.y < -boundingWall || position.z < -boundingWall   // Neg
+    if (position.x > boundingWall  || position.y > boundingWall  || position.z > boundingWall  || position.w > boundingWall || // Pos
+        position.x < -boundingWall || position.y < -boundingWall || position.z < -boundingWall || position.w < -boundingWall    // Neg
         ) {
       position.clamp(-boundingWall, boundingWall);
     }
@@ -73,17 +81,24 @@ class Player
     camera( position.x, position.y, position.z,
             position.x + forwardDir.x, position.y + forwardDir.y + cos(p), position.z + forwardDir.z,
             upDir.x, upDir.y, upDir.z );
+            
+    //println(position.w);
+  }
+  
+  void Draw() {
+    bar.Draw();
   }
   
   // only need to change if you want difrent keys for the controls
   void HandleKeyPressed()
   {
-    if ( key == 'w' || key == 'W' ) positiveMovement.z = 1;
-    if ( key == 's' || key == 'S' ) negativeMovement.z = -1;
-    if ( key == 'a' || key == 'A' ) negativeMovement.x = -1;
-    if ( key == 'd' || key == 'D' ) positiveMovement.x = 1;
+    if ( key == 'w' || key == 'W' ) positiveMovement.z = 1;  // Forward
+    if ( key == 's' || key == 'S' ) negativeMovement.z = -1; // Backwards
+    if ( key == 'd' || key == 'D' ) positiveMovement.x = 1;  // Right
+    if ( key == 'a' || key == 'A' ) negativeMovement.x = -1; // Left
+    if ( key == 'e' || key == 'E' ) positiveMovement.w = 1;  // Zig
+    if ( key == 'q' || key == 'Q' ) negativeMovement.w = -1; // Zag
     
-    if (key == ' ') println("hi");
     if ( key == ' ' && velocity.y == 0) velocity.y = -jumpSpeed; // Probably safe unless someone jumps at the exact apex of their arc
     
     if ( key == 'r' || key == 'R' ){
@@ -108,8 +123,10 @@ class Player
   {
     if ( key == 'w' || key == 'W' ) positiveMovement.z = 0;
     if ( key == 'd' || key == 'D' ) positiveMovement.x = 0;
+    if ( key == 'e' || key == 'E' ) positiveMovement.w = 0;
     if ( key == 'a' || key == 'A' ) negativeMovement.x = 0;
     if ( key == 's' || key == 'S' ) negativeMovement.z = 0;
+    if ( key == 'q' || key == 'Q' ) negativeMovement.w = 0;
     
     if ( keyCode == LEFT  ) negativeTurn.x = 0;
     if ( keyCode == RIGHT ) positiveTurn.x = 0;
@@ -120,8 +137,8 @@ class Player
   }
   
   // only necessary to change if you want different start position, orientation, or speeds
-  Vec3 position;
-  Vec3 velocity;
+  Vec4 position;
+  Vec4 velocity;
   float theta;
   float phi;
   float moveSpeed;
@@ -130,13 +147,16 @@ class Player
   float boostSpeed;
   float radius;
   
+  // UI
+  Bar bar;
+  
   // probably don't need / want to change any of the below variables
   float fovy;
   float aspectRatio;
   float nearPlane;
   float farPlane;  
-  PVector negativeMovement;
-  PVector positiveMovement;
+  Vec4 negativeMovement;
+  Vec4 positiveMovement;
   PVector negativeTurn;
   PVector positiveTurn;
   boolean shiftPressed;

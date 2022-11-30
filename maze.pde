@@ -1,10 +1,11 @@
 // maze.pde
 
 int wallLen = 1000;
-Vec3 gravity = new Vec3(0, 100, 0);
+Vec4 gravity = new Vec4(0, 100, 0, 0);
 
 Player player;
 Wall wall;
+Object tree;
 
 void setup()
 {
@@ -12,6 +13,7 @@ void setup()
   
   player = new Player();
   wall = new Wall();
+  tree = new Object();
 }
 
 void update(float dt) {
@@ -27,7 +29,10 @@ void draw() {
 
   update(1.0/frameRate);
   
+  player.Draw();
+  
   wall.Draw();
+  tree.Draw(player.getW());
 }
 
 void keyPressed()
