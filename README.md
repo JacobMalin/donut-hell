@@ -1,5 +1,7 @@
 # CSCI-5611-Project-4
 
+By: Michael Cauthorn (cauth006), Jacob Malin (malin146)
+
 ## Update 11/30/2022:
 We have made a rubrics-colored prison with collision detection and basic physics (jumping and gravity). We made a vec4 library and implemented an object (tree) spawning in specific w coordinates. We also added a UI bar to show where the user is in w space. 
 
