@@ -1,11 +1,17 @@
 // maze.pde
 
 int wallLen = 1000;
-Vec4 gravity = new Vec4(0, 100, 0, 0);
+int wallRad = 10;
+int playerRad = 20;
+Vec4 gravity = new Vec4(0, 150, 0, 0);
 
 Player player;
 Wall wall;
-Object tree;
+KDTree tree;
+
+int maxLayers = 5;
+Vec4 corner = new Vec4(-wallLen/2, -wallLen/2, -wallLen/2, -wallLen/2);
+Vec4 size = new Vec4(wallLen, wallLen, wallLen, wallLen);
 
 void setup()
 {
@@ -13,7 +19,8 @@ void setup()
   
   player = new Player();
   wall = new Wall();
-  tree = new Object();
+  tree = generate(maxLayers, corner, size);
+  println(tree);
 }
 
 void update(float dt) {
@@ -43,4 +50,12 @@ void keyPressed()
 void keyReleased()
 {
   player.HandleKeyReleased();
+}
+
+
+
+/* HIT INFO */
+class hitInfo{
+  public boolean hit = false;
+  public Vec4 dir = new Vec4(0, 0, 0, 0);
 }

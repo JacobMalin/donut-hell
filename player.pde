@@ -16,8 +16,8 @@ class Player
     moveSpeed     = 100;
     jumpSpeed     = 100;
     turnSpeed     = 1.57; // radians/sec
-    boostSpeed    = 10;  // extra speed boost for when you press shift
-    radius        = 20; // distance for collision
+    boostSpeed    = 5;  // extra speed boost for when you press shift
+    radius        = playerRad; // distance for collision
     
     // UI
     bar = new Bar(this);
@@ -53,12 +53,12 @@ class Player
     Vec4 rightDir   = new Vec4( cos( theta ),          0,   -sin( theta ),           0 );
     Vec4 zagDir     = new Vec4( 0,                     0,   0,                       1 );
     
+    if (shiftPressed) moveSpeed *= boostSpeed;
     velocity.x = moveSpeed * (negativeMovement.x + positiveMovement.x);
     velocity.y += gravity.y * dt; // The y axis is special and does not have a constant velocity
     velocity.z = moveSpeed * (negativeMovement.z + positiveMovement.z);
     velocity.w = moveSpeed * (negativeMovement.w + positiveMovement.w);
     
-    if (shiftPressed) moveSpeed *= boostSpeed;
     position.add( Vec4.mul( rightDir,   velocity.x * dt ) );
     position.add( Vec4.mul( upDir,      velocity.y * dt ) );
     position.add( Vec4.mul( forwardDir, velocity.z * dt ) );
@@ -73,6 +73,13 @@ class Player
         position.x < -boundingWall || position.y < -boundingWall || position.z < -boundingWall || position.w < -boundingWall    // Neg
         ) {
       position.clamp(-boundingWall, boundingWall);
+    }
+    
+    
+    hitInfo hit = tree.collide(position);
+    if (hit.hit) {
+      position.add( hit.dir );
+      if ( hit.dir.y < 0 ) velocity.y = 0;
     }
     
     
@@ -99,13 +106,17 @@ class Player
     if ( key == 'e' || key == 'E' ) positiveMovement.w = 1;  // Zig
     if ( key == 'q' || key == 'Q' ) negativeMovement.w = -1; // Zag
     
-    if ( key == ' ' && velocity.y == 0) velocity.y = -jumpSpeed; // Probably safe unless someone jumps at the exact apex of their arc
+    //if ( key == ' ' && velocity.y == 0) velocity.y = -jumpSpeed; // Probably safe unless someone jumps at the exact apex of their arc
+    if ( key == ' ') velocity.y = -2*jumpSpeed;
     
     if ( key == 'r' || key == 'R' ){
-      Player defaults = new Player();
-      position = defaults.position;
-      theta = defaults.theta;
-      phi = defaults.phi;
+      //Player defaults = new Player();
+      //position = defaults.position;
+      //theta = defaults.theta;
+      //phi = defaults.phi;
+      
+      tree = generate(maxLayers, corner, size);
+      println(tree);
     }
     
     if ( keyCode == LEFT )  negativeTurn.x = 1;

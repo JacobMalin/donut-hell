@@ -27,7 +27,6 @@ class Bar {
     
     pushMatrix();
     translate(mainDir.x, mainDir.y, mainDir.z);
-    println(p.phi, p.theta);
     rotateY(p.theta);
     rotateX(-p.phi);
     fill(stoneBlue);
@@ -39,7 +38,7 @@ class Bar {
     rotateY(p.theta);
     rotateX(-p.phi);
     fill(green);
-    box(2.97, 0.3, 0.01);
+    box(2.74, 0.3, 0.01);
     popMatrix();
     
     pushMatrix();

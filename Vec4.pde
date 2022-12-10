@@ -18,6 +18,44 @@ public static class Vec4 {
     this.w = w;
   }
   
+  public static Vec4 copy(Vec4 other) {
+    return new Vec4(other.x, other.y, other.z, other.w);
+  }
+  
+  public float get(int dim) throws Exception {
+    switch (dim) {
+      case 0:
+        return x;
+      case 1:
+        return y;
+      case 2:
+        return z;
+      case 3:
+        return w;
+    }
+    
+    throw new Exception("Vec4 get out of bounds");
+  }
+  
+  public void set(int dim, float value) throws Exception {
+    switch (dim) {
+      case 0:
+        x = value;
+        break;
+      case 1:
+        y = value;
+        break;
+      case 2:
+        z = value;
+        break;
+      case 3:
+        w = value;
+        break;
+      default:
+        throw new Exception("Vec4 set out of bounds");
+    }
+  }
+  
   public String toString(){
     return "(" + x+ "," + y + "," + z + "," + w + ")";
   }
