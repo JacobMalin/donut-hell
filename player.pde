@@ -77,6 +77,7 @@ class Player
     
     
     hitInfo hit = tree.collide(position);
+    //println(hit.hit, hit.dir);
     if (hit.hit) {
       position.add( hit.dir );
       if ( hit.dir.y < 0 ) velocity.y = 0;
@@ -116,7 +117,6 @@ class Player
       //phi = defaults.phi;
       
       tree = generate(maxLayers, corner, size);
-      println(tree);
     }
     
     if ( keyCode == LEFT )  negativeTurn.x = 1;

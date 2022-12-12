@@ -33,13 +33,13 @@ class Bar {
     box(14.8, 0.5, 0);
     popMatrix();
     
-    pushMatrix();
-    translate(mainDir.x, mainDir.y, mainDir.z);
-    rotateY(p.theta);
-    rotateX(-p.phi);
-    fill(green);
-    box(2.74, 0.3, 0.01);
-    popMatrix();
+    //pushMatrix();
+    //translate(mainDir.x, mainDir.y, mainDir.z);
+    //rotateY(p.theta);
+    //rotateX(-p.phi);
+    //fill(green);
+    //box(2.74, 0.3, 0.01);
+    //popMatrix();
     
     pushMatrix();
     translate(homerDir.x, homerDir.y, homerDir.z);

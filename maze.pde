@@ -9,9 +9,10 @@ Player player;
 Wall wall;
 KDTree tree;
 
-int maxLayers = 100;
+int maxLayers = 5;
 Vec4 corner = new Vec4(-wallLen/2, -wallLen/2, -wallLen/2, -wallLen/2);
 Vec4 size = new Vec4(wallLen, wallLen, wallLen, wallLen);
+Vec4 doorThickness = new Vec4(playerRad*2 + 10, playerRad*2 + 10, playerRad*2 + 10, playerRad*2 + 10);
 
 void setup()
 {
