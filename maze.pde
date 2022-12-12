@@ -9,7 +9,7 @@ Player player;
 Wall wall;
 KDTree tree;
 
-int maxLayers = 5;
+int maxLayers = 100;
 Vec4 corner = new Vec4(-wallLen/2, -wallLen/2, -wallLen/2, -wallLen/2);
 Vec4 size = new Vec4(wallLen, wallLen, wallLen, wallLen);
 
@@ -20,7 +20,7 @@ void setup()
   player = new Player();
   wall = new Wall();
   tree = generate(maxLayers, corner, size);
-  println(tree);
+  //println(tree);
 }
 
 void update(float dt) {

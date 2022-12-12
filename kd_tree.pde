@@ -15,8 +15,8 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness) {
   
   try {
     if (currentLayer < maxLayers && (thickness.get(currentLayer % 4) - 4*playerRad - 2*wallRad) > 0) {
-      float temp = random(2*playerRad + wallRad - wallLen/2, thickness.get(currentLayer % 4) - 2*playerRad - wallRad - wallLen/2);
-      println(2*playerRad + wallRad - wallLen/2, thickness.get(currentLayer % 4) - 2*playerRad - wallRad - wallLen/2, temp);
+      float temp = random(pos.get(currentLayer % 4) + 2*playerRad + wallRad, pos.get(currentLayer % 4) + thickness.get(currentLayer % 4) - 2*playerRad - wallRad);
+      //println(pos.get(currentLayer % 4) + 2*playerRad + wallRad, pos.get(currentLayer % 4) + thickness.get(currentLayer % 4) - 2*playerRad - wallRad, temp);
 
       tree.wall = new InnerWall(Vec4.copy(pos), Vec4.copy(thickness), colors[currentLayer % 4]);
       tree.wall.pos.set(currentLayer % 4, temp - wallRad);
