@@ -86,7 +86,7 @@ class InnerWall {
             playerPos.x - pos.x + playerRad, 
             thickness.x - playerPos.x + pos.x + playerRad,
             playerPos.w - doorPos.w + playerRad,
-            thickness.w - playerPos.w + doorPos.w,
+            thickness.w - playerPos.w + doorPos.w + playerRad,
           };
           
           for (int i = 0; i < 4; i++) {
