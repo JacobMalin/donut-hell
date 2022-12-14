@@ -4,12 +4,12 @@ class Wall {
   public Wall() {}
   
   void Draw() {
-    color green = #009b48; // F
-    color blue = #004680; // B
-    color orange = #ff5800; // L
-    color red = #b41234; // R
-    color white = #ffffff; // U
-    color yellow = #ffd500; // D
+    color green = #009e49; // F
+    color blue = #00188f; // B
+    color orange = #ff8c00; // L
+    color red = #e81123; // R
+    color white = #ec008c; // U #ffffff // pink
+    color yellow = #fff100; // D
     
     int wallWidth = 0;
     

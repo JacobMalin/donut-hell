@@ -47,7 +47,7 @@ class InnerWall {
       doorHit  = dir.x < thickness.x + playerRad && dir.x > -playerRad &&
                  dir.y < thickness.y + playerRad && dir.y > thickness.y - doorThickness.y - playerRad &&
                  dir.z < doorPos.z - pos.z + doorThickness.z + playerRad && dir.z > doorPos.z - pos.z - playerRad &&
-                 (dir.w < doorPos.w -pos.w || dir.w > doorPos.w - pos.w + doorThickness.w);
+                 (dir.w < doorPos.w - pos.w || dir.w > doorPos.w - pos.w + doorThickness.w);
       
       hit.hit = topHit || closeHit || farHit || doorHit;
       
@@ -85,14 +85,18 @@ class InnerWall {
           float[] dims = {
             playerPos.x - pos.x + playerRad, 
             thickness.x - playerPos.x + pos.x + playerRad,
+            playerPos.w - doorPos.w + playerRad,
+            thickness.w - playerPos.w + doorPos.w,
           };
           
-          for (int i = 0; i < 2; i++) {
+          for (int i = 0; i < 4; i++) {
             if (dims[i] < min) {
               min = dims[i];
               dim = i;
             }
           }
+          println(thickness.w, playerPos.w, doorPos.w);
+          //println(dims);
           
           switch (dim) {
             case 0:
@@ -101,6 +105,13 @@ class InnerWall {
             case 1:
               if (hit.dir.x == 0) hit.dir.add(new Vec4(dims[1], 0, 0, 0));
               break;
+            case 2:
+              if (hit.dir.w == 0) hit.dir.add(new Vec4(0, 0, 0, dims[2]));
+              break;
+            case 3:
+              if (hit.dir.w == 0) hit.dir.add(new Vec4(0, 0, 0, dims[3]));
+              break;
+              
           }
         } if (closeHit) {
           float min = MAX_FLOAT;
@@ -158,8 +169,148 @@ class InnerWall {
           }
         }
       }
+    }else if (orien == 2){
+    boolean topHit, closeHit, farHit, doorHit;
+      // Top
+      topHit   = dir.x < thickness.x + playerRad && dir.x > -playerRad &&
+                 dir.y < thickness.y - doorThickness.y + playerRad && dir.y > -playerRad &&
+                 dir.z < thickness.z + playerRad && dir.z > -playerRad &&
+                 dir.w < thickness.w + playerRad && dir.w > -playerRad;
+      
+      // Close to pos
+      closeHit = dir.z < thickness.z + playerRad && dir.z > -playerRad &&
+                 dir.y < thickness.y + playerRad && dir.y > thickness.y - doorThickness.y - playerRad &&
+                 dir.x < doorPos.x - pos.x + playerRad && dir.x > -playerRad &&
+                 dir.w < thickness.w + playerRad && dir.w > -playerRad;
+      
+      // Far from pos
+      farHit   = dir.z < thickness.z + playerRad && dir.z > -playerRad &&
+                 dir.y < thickness.y + playerRad && dir.y > thickness.y - doorThickness.y - playerRad &&
+                 dir.x < thickness.x + playerRad && dir.x > doorPos.x - pos.x + doorThickness.x - playerRad &&
+                 dir.w < thickness.w + playerRad && dir.w > -playerRad;
+                 
+      // Door
+      doorHit  = dir.z < thickness.z + playerRad && dir.z > -playerRad &&
+                 dir.y < thickness.y + playerRad && dir.y > thickness.y - doorThickness.y - playerRad &&
+                 dir.x < doorPos.x - pos.x + doorThickness.x + playerRad && dir.x > doorPos.x - pos.x - playerRad &&
+                 (dir.w < doorPos.w -pos.w || dir.w > doorPos.w - pos.w + doorThickness.w);
+      
+      hit.hit = topHit || closeHit || farHit || doorHit;
+      
+      //if(topHit) println("topHit" + pos);
+      //if(closeHit) println("closeHit"+ pos);
+      //if(farHit) println("farHit"+ pos);
+      //if(doorHit) println("doorHit"+ pos);
+      
+      if (hit.hit) {
+        if (topHit) {
+          float min = MAX_FLOAT;
+          int dim = -1;
+          float[] dims = {
+            playerPos.z - pos.z + playerRad, 
+            thickness.z - playerPos.z + pos.z + playerRad,
+            thickness.y - doorThickness.y - playerPos.y + pos.y + playerRad,
+          };
+          
+          for (int i = 0; i < 3; i++) {
+            if (dims[i] < min) {
+              min = dims[i];
+              dim = i;
+            }
+          }
+          
+          switch (dim) {
+            case 0:
+              if (hit.dir.z == 0) hit.dir.add(new Vec4(0, 0, -dims[0], 0));
+              break;
+            case 1:
+              if (hit.dir.z == 0) hit.dir.add(new Vec4(0, 0, dims[1], 0));
+              break;
+            case 2:
+              hit.dir.add(new Vec4(0, dims[2], 0, 0));
+              break;
+          }
+        } if (doorHit) {
+          float min = MAX_FLOAT;
+          int dim = -1;
+          float[] dims = {
+            playerPos.z - pos.z + playerRad, 
+            thickness.z - playerPos.z + pos.z + playerRad,
+          };
+          
+          for (int i = 0; i < 2; i++) {
+            if (dims[i] < min) {
+              min = dims[i];
+              dim = i;
+            }
+          }
+          
+          switch (dim) {
+            case 0:
+              if (hit.dir.z == 0) hit.dir.add(new Vec4(0, 0, -dims[0], 0));
+              break;
+            case 1:
+              if (hit.dir.z == 0) hit.dir.add(new Vec4(0, 0, dims[1], 0));
+              break;
+          }
+        } if (closeHit) {
+          float min = MAX_FLOAT;
+          int dim = -1;
+          float[] dims = {
+            playerPos.z - pos.z + playerRad, 
+            thickness.z - playerPos.z + pos.z + playerRad,
+            doorPos.x - playerPos.x + playerRad,
+          };
+          
+          for (int i = 0; i < 3; i++) {
+            if (dims[i] < min) {
+              min = dims[i];
+              dim = i;
+            }
+          }
+          
+          switch (dim) {
+            case 0:
+              if (hit.dir.z == 0) hit.dir.add(new Vec4(0, 0, -dims[0], 0));
+              break;
+            case 1:
+              if (hit.dir.z == 0) hit.dir.add(new Vec4(0, 0, dims[1], 0));
+              break;
+            case 2:
+              hit.dir.add(new Vec4(dims[2], 0, 0, 0));
+              break;
+          }
+        } if (farHit) {
+          float min = MAX_FLOAT;
+          int dim = -1;
+          float[] dims = {
+            playerPos.z - pos.z + playerRad, 
+            thickness.z - playerPos.z + pos.z + playerRad,
+            playerPos.x - doorPos.x - doorThickness.x + playerRad,
+          };
+          
+          for (int i = 0; i < 3; i++) {
+            if (dims[i] < min) {
+              min = dims[i];
+              dim = i;
+            }
+          }
+          
+          switch (dim) {
+            case 0:
+              if (hit.dir.z == 0) hit.dir.add(new Vec4(0, 0, -dims[0], 0));
+              break;
+            case 1:
+              if (hit.dir.z == 0) hit.dir.add(new Vec4(0, 0, dims[1], 0));
+              break;
+            case 2:
+              hit.dir.add(new Vec4(-dims[2], 0, 0, 0));
+              break;
+          }
+        }
+      }
     }
-    
+    //hit.hit = false;
     return hit;
   }
   

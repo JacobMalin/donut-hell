@@ -15,10 +15,10 @@ KDTree generate(int maxLayers, Vec4 pos, Vec4 thickness) {
 KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, ArrayList<Float>[] avoid) {
   KDTree tree = new KDTree();
   color[] colors = {
-    #b12856,
-    #a63d20,
-    #825700,
-    #4d6800,
+    #68217a,
+    #00bcf2,
+    #00b294,
+    #bad80a,
   };
   
   try {
@@ -77,8 +77,8 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
         
         boolean do_continue = false;
         for (int j = 0; j < avoid[currentLayer % 4].size(); j++) {
-          println(currentLayer%4, i, j, avoid[currentLayer % 4].get(j), wallRand, doorThickness.get(currentLayer % 4) + wallRad + padding, avoid[currentLayer % 4].get(j) + doorThickness.get(currentLayer % 4) + wallRad + padding > wallRand && 
-              avoid[currentLayer % 4].get(j) - doorThickness.get(currentLayer % 4) - wallRad - padding < wallRand);
+          //println(currentLayer%4, i, j, avoid[currentLayer % 4].get(j), wallRand, doorThickness.get(currentLayer % 4) + wallRad + padding, avoid[currentLayer % 4].get(j) + doorThickness.get(currentLayer % 4) + wallRad + padding > wallRand && 
+          //    avoid[currentLayer % 4].get(j) - doorThickness.get(currentLayer % 4) - wallRad - padding < wallRand);
           if (avoid[currentLayer % 4].get(j) + doorThickness.get(currentLayer % 4) + wallRad + padding > wallRand && 
               avoid[currentLayer % 4].get(j) - doorThickness.get(currentLayer % 4) - wallRad - padding < wallRand) {
                 do_continue = true;
