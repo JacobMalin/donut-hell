@@ -15,7 +15,7 @@ class Player
     phi           = 0.526; // rotation around X axis. Starts with up direction as ( 0, 1, 0 )
     moveSpeed     = 100;
     jumpSpeed     = 100;
-    turnSpeed     = 1.57; // radians/sec
+    turnSpeed     = 3*PI/4; // radians/sec
     boostSpeed    = 5;  // extra speed boost for when you press shift
     radius        = playerRad; // distance for collision
     
@@ -80,7 +80,7 @@ class Player
     //println(hit.hit, hit.dir);
     if (hit.hit) {
       position.add( hit.dir );
-      if ( hit.dir.y < 0 ) velocity.y = 0;
+      if ( hit.dir.y != 0 ) velocity.y = 0;
     }
     
     

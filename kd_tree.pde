@@ -3,6 +3,8 @@
 int maxIter = 10;
 int padding = 10;
 
+color wireframe = #bad80a;
+
 KDTree generate(int maxLayers, Vec4 pos, Vec4 thickness) {
   ArrayList<Float>[] avoid = new ArrayList[4];
   for (int i = 0; i < 4; i++) {
@@ -18,11 +20,11 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
     #68217a,
     #00bcf2,
     #00b294,
-    #bad80a,
+    wireframe,
   };
   
   try {
-    if (currentLayer < maxLayers && (thickness.get(currentLayer % 4) - 4*playerRad - 2*wallRad - 2*padding) > 0) {
+    if (currentLayer < maxLayers && (thickness.get(currentLayer % 4) - 2*doorThickness.get(currentLayer % 4) - 2*wallRad - 2*padding) > 0) {
       Vec4 doorPos = Vec4.copy(pos);
       float doorRandX, doorRandZ, doorRandW;
       switch (currentLayer % 4) {
@@ -73,7 +75,8 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
       
       float wallRand = -1;
       for (int i = 0; i < maxIter; i++) {
-        wallRand = random(pos.get(currentLayer % 4) + 2*playerRad + wallRad + padding, pos.get(currentLayer % 4) + thickness.get(currentLayer % 4) - 2*playerRad - wallRad - padding);
+        wallRand = random(pos.get(currentLayer % 4) + doorThickness.get(currentLayer % 4) + wallRad + padding, 
+                          pos.get(currentLayer % 4) + thickness.get(currentLayer % 4) - doorThickness.get(currentLayer % 4) - wallRad - padding);
         
         boolean do_continue = false;
         for (int j = 0; j < avoid[currentLayer % 4].size(); j++) {

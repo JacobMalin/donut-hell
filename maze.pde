@@ -2,17 +2,19 @@
 
 int wallLen = 1000;
 int wallRad = 10;
-int playerRad = 20;
+int playerRad = 11;
 Vec4 gravity = new Vec4(0, 150, 0, 0);
 
 Player player;
 Wall wall;
 KDTree tree;
 
-int maxLayers = 5;
+int maxLayers = 10;
 Vec4 corner = new Vec4(-wallLen/2, -wallLen/2, -wallLen/2, -wallLen/2);
 Vec4 size = new Vec4(wallLen, wallLen, wallLen, wallLen);
 Vec4 doorThickness = new Vec4(playerRad*2 + 10, playerRad*2 + 10, playerRad*2 + 10, playerRad*2 + 10);
+
+int wireframeWeight = 10;
 
 void setup()
 {
