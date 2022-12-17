@@ -5,13 +5,16 @@ class InnerWall {
   Vec4 pos, thickness;
   int orien;
   Vec4 doorPos;
+  Vec4 KDPos, KDThickness;
 
-  public InnerWall(Vec4 pos, Vec4 thickness, color c, int orien, Vec4 doorPos) {
+  public InnerWall(Vec4 pos, Vec4 thickness, color c, int orien, Vec4 doorPos, Vec4 KDPos, Vec4 KDThickness) {
     this.pos = pos;
     this.thickness = thickness;
     this.c = c;
     this.orien = orien;
     this.doorPos = doorPos;
+    this.KDPos = KDPos;
+    this.KDThickness = KDThickness;
   }
   
   public String toString() {
@@ -913,7 +916,7 @@ class InnerWall {
           translate(doorPos.x + doorThickness.x/2, doorPos.y + doorThickness.y/2 + wallRad.y/2, doorPos.z + doorThickness.z/2);
           box(doorThickness.x, doorThickness.y + wallRad.y, doorThickness.z);
           popMatrix();
-        } else {
+        } else if (w < (KDPos.w + KDThickness.w) && w > KDPos.w) {
           // Door wireframe
           pushMatrix();
           noFill();
@@ -923,7 +926,6 @@ class InnerWall {
           box(doorThickness.x, doorThickness.y, doorThickness.z);
           popMatrix();
         }
-        
         
         noStroke();
     }

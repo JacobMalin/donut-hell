@@ -1,7 +1,7 @@
 // maze.pde
 
-int wallLen = 1000;
-Vec4 wallRad = new Vec4(5, 5, 5, 40);
+int wallLen = 2000;
+Vec4 wallRad = new Vec4(5, 5, 5, 30);
 int playerRad = 11;
 Vec4 gravity = new Vec4(0, 100, 0, 0);
 
@@ -9,24 +9,25 @@ Player player;
 Wall wall;
 KDTree tree;
 
-int maxLayers = 30;
+int maxLayers = 6;
 Vec4 corner = new Vec4(-wallLen/2, -wallLen/2, -wallLen/2, -wallLen/2);
 Vec4 size = new Vec4(wallLen, wallLen, wallLen, wallLen);
-Vec4 doorThickness = new Vec4(playerRad*2 + 10, playerRad*2 + 10, playerRad*2 + 10, playerRad*2 + 100);
+Vec4 doorThickness = new Vec4(playerRad*2 + 20, playerRad*2 + 20, playerRad*2 + 20, playerRad*2 + 70);
 
 int wireframeWeight = 10;
 
 PShape donut;
-color pink = #ffffff;
-color tanBrown = #000000;
+color pink = #fdb5cd;
+color tanBrown = #dfb77e;
 
 void setup()
 {
   size(1280, 720, P3D);
-  
-  player = new Player();
   wall = new Wall();
   tree = generate(maxLayers, corner, size);
+  player = new Player(tree.numDonuts);
+  println("Total Donuts:", tree.numDonuts);
+  //println(tree);
   
   //donut = load();
   PShape frosting, dough;

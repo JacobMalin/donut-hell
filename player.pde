@@ -4,10 +4,11 @@
 // Modified.
 
 int epsilon = 10;
+int donutsLeft;
 
 class Player
 {
-  public Player()
+  public Player(int numDonuts)
   {
     position      = new Vec4( wallLen/2-playerRad, wallLen/2-playerRad, wallLen/2-playerRad, wallLen/2-playerRad ); // initial position
     velocity      = new Vec4(); // initial velocity
@@ -18,6 +19,7 @@ class Player
     turnSpeed     = 3*PI/4; // radians/sec
     boostSpeed    = 3;  // extra speed boost for when you press shift
     radius        = playerRad; // distance for collision
+    donutsLeft    = numDonuts; // Number of donuts consumed
     
     // UI
     bar = new Bar(this);
@@ -38,7 +40,7 @@ class Player
   
   void Update(float dt)
   {
-    theta += turnSpeed * ( negativeTurn.x + positiveTurn.x)*dt;
+    theta += turnSpeed * (negativeTurn.x + positiveTurn.x)*dt;
     
     // cap the rotation about the X axis to be less than 90 degrees to avoid gimble lock
     float maxAngleInRadians = 85 * PI / 180;
@@ -81,7 +83,14 @@ class Player
       position.add( hit.dir );
       if ( hit.dir.y != 0 ) velocity.y = 0;
     }
-    println(velocity.y);
+    
+    
+    // Donut collision
+    if (tree.donutCollide(position)) {
+      donutsLeft--;
+      println("Donuts left:", donutsLeft);
+    }
+    //println(tree);
     
     
     aspectRatio = width / (float) height;
@@ -95,6 +104,7 @@ class Player
   
   void Draw() {
     bar.Draw();
+    //println(position.x, position.y, position.z, position.w);
     
     //color warm = #f6cd8b;
     //float intensity = 0.5;
@@ -119,6 +129,8 @@ class Player
       //phi = defaults.phi;
       
       tree = generate(maxLayers, corner, size);
+      
+      donutsLeft = tree.numDonuts;
     }
     
     if ( keyCode == LEFT )  negativeTurn.x = 1;

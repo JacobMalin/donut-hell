@@ -22,7 +22,7 @@ class Bar {
     Vec4 mainPos = new Vec4(10, 3.89, 0, 0);
     Vec4 mainDir = Vec4.add(Vec4.add(p.position, Vec4.mul(forwardDir, mainPos.x)), Vec4.add(Vec4.mul(upDir, mainPos.y), Vec4.mul(rightDir, mainPos.z)));
     
-    Vec4 homerPos = new Vec4(10.06, 3.89, p.getW()/480 * 7.1, 0);
+    Vec4 homerPos = new Vec4(10.06, 3.89, p.getW()/480 * 7.1 / 2, 0);
     Vec4 homerDir = Vec4.add(Vec4.add(p.position, Vec4.mul(forwardDir, homerPos.x)), Vec4.add(Vec4.mul(upDir, homerPos.y), Vec4.mul(rightDir, homerPos.z)));
     
     pushMatrix();

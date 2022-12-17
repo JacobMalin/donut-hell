@@ -11,7 +11,7 @@ KDTree generate(int maxLayers, Vec4 pos, Vec4 thickness) {
     avoid[i] = new ArrayList<Float>();
   }
   
-  return generate(maxLayers, 0, pos, thickness, avoid);
+  return generate(maxLayers+3, 3, pos, thickness, avoid);
 }
 
 KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, ArrayList<Float>[] avoid) {
@@ -88,7 +88,7 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
                 break;
               }
         }
-        if (i == maxIter - 1) return new donutRoom(pos, thickness);
+        if (i == maxIter - 1) return new donutRoom(Vec4.copy(pos), Vec4.copy(thickness));
         
         if (do_continue) continue;
         
@@ -101,7 +101,7 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
         green(colors[currentLayer % 4]) + random(-variation, variation), 
         blue(colors[currentLayer % 4]) + random(-variation, variation)
       );
-      tree.wall = new InnerWall(Vec4.copy(pos), Vec4.copy(thickness), new_color, currentLayer % 4, doorPos);
+      tree.wall = new InnerWall(Vec4.copy(pos), Vec4.copy(thickness), new_color, currentLayer % 4, doorPos, Vec4.copy(pos), Vec4.copy(thickness));
       tree.wall.pos.set(currentLayer % 4, wallRand - wallRad.get(currentLayer % 4));
       tree.wall.thickness.set(currentLayer % 4, wallRad.get(currentLayer % 4)*2);
 
@@ -129,6 +129,8 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
 
       tree.left = generate(maxLayers, currentLayer+1, Vec4.copy(pos), leftThickness, leftAvoid);
       tree.right = generate(maxLayers, currentLayer+1, rightPos, rightThickness, rightAvoid);
+      
+      tree.numDonuts = tree.left.numDonuts + tree.right.numDonuts;
 
       return tree;
     }
@@ -136,7 +138,7 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
     println(e);
   }
   
-  return new donutRoom(pos, thickness);
+  return new donutRoom(Vec4.copy(pos), Vec4.copy(thickness));
 }
 
 public class KDTree {
@@ -145,11 +147,16 @@ public class KDTree {
   
   Vec4 pos;
   Vec4 thickness;
-
-  public KDTree() {}
+  
+  int numDonuts;
+  
+  public KDTree() {
+    this.numDonuts = 0;
+  }
 
   public KDTree(InnerWall wall) {
     this.wall = wall;
+    this.numDonuts = 0;
   }
   
   public KDTree(InnerWall wall, InnerWall leftWall, InnerWall rightWall) {
@@ -157,6 +164,8 @@ public class KDTree {
     
     left = new KDTree(leftWall);
     right = new KDTree(rightWall);
+    
+    this.numDonuts = 0;
   }
   
   public String toString(){
@@ -185,6 +194,10 @@ public class KDTree {
     return hit;
   }
   
+  boolean donutCollide(Vec4 playerPos) {
+    return left.donutCollide(playerPos) || right.donutCollide(playerPos);
+  }
+  
   boolean isInside(Vec4 playerPos) {
     Vec4 dir = Vec4.sub(playerPos, pos);
     return dir.x < thickness.x && dir.x > 0 &&
@@ -196,7 +209,7 @@ public class KDTree {
   void Draw(float w) {
     wall.Draw(w);
     
-    if (left != null)  left.Draw(w);
-    if (right != null) right.Draw(w);
+    left.Draw(w);
+    right.Draw(w);
   }
 }
