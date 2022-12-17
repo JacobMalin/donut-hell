@@ -24,15 +24,15 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
   };
   
   try {
-    if (currentLayer < maxLayers && (thickness.get(currentLayer % 4) - 2*doorThickness.get(currentLayer % 4) - 2*wallRad - 2*padding) > 0) {
+    if (currentLayer < maxLayers && (thickness.get(currentLayer % 4) - 2*doorThickness.get(currentLayer % 4) - 2*wallRad.get(currentLayer % 4) - 2*padding) > 0) {
       Vec4 doorPos = Vec4.copy(pos);
       float doorRandX, doorRandZ, doorRandW;
       switch (currentLayer % 4) {
         case 0:
-          doorRandZ = random(wallRad, thickness.z - doorThickness.z - wallRad);
-          doorRandW = random(wallRad, thickness.w - doorThickness.w - wallRad);
+          doorRandZ = random(wallRad.z, thickness.z - doorThickness.z - wallRad.z);
+          doorRandW = random(wallRad.w, thickness.w - doorThickness.w - wallRad.w);
           doorPos.y = pos.y + thickness.y - doorThickness.y;
-          if (doorPos.y < wallLen/2 - 3*doorThickness.y/2) doorPos.y -= wallRad;
+          if (doorPos.y < wallLen/2 - 3*doorThickness.y/2) doorPos.y -= wallRad.y;
           doorPos.z += doorRandZ;
           doorPos.w += doorRandW;
           avoid[1].add(doorPos.y);
@@ -40,9 +40,9 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
           avoid[3].add(doorPos.w);
           break;
         case 1:
-          doorRandX = random(wallRad, thickness.x - doorThickness.x - wallRad);
-          doorRandZ = random(wallRad, thickness.z - doorThickness.z - wallRad);
-          doorRandW = random(wallRad, thickness.w - doorThickness.w - wallRad);
+          doorRandX = random(wallRad.x, thickness.x - doorThickness.x - wallRad.x);
+          doorRandZ = random(wallRad.z, thickness.z - doorThickness.z - wallRad.z);
+          doorRandW = random(wallRad.w, thickness.w - doorThickness.w - wallRad.w);
           doorPos.x += doorRandX;
           doorPos.z += doorRandZ;
           doorPos.w += doorRandW;
@@ -51,22 +51,22 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
           avoid[3].add(doorPos.w);
           break;
         case 2:
-          doorRandX = random(wallRad, thickness.x - doorThickness.x - wallRad);
-          doorRandW = random(wallRad, thickness.w - doorThickness.w - wallRad);
+          doorRandX = random(wallRad.x, thickness.x - doorThickness.x - wallRad.x);
+          doorRandW = random(wallRad.w, thickness.w - doorThickness.w - wallRad.w);
           doorPos.x += doorRandX;
           doorPos.y = pos.y + thickness.y - doorThickness.y;
-          if (doorPos.y < wallLen/2 - 3*doorThickness.y/2) doorPos.y -= wallRad;
+          if (doorPos.y < wallLen/2 - 3*doorThickness.y/2) doorPos.y -= wallRad.y;
           doorPos.w += doorRandW;
           avoid[0].add(doorPos.x);
           avoid[1].add(doorPos.y);
           avoid[3].add(doorPos.w);
           break;
         case 3:
-          doorRandX = random(wallRad, thickness.x - doorThickness.x - wallRad);
-          doorRandZ = random(wallRad, thickness.z - doorThickness.z - wallRad);
+          doorRandX = random(wallRad.x, thickness.x - doorThickness.x - wallRad.x);
+          doorRandZ = random(wallRad.z, thickness.z - doorThickness.z - wallRad.z);
           doorPos.x += doorRandX;
           doorPos.y = pos.y + thickness.y - doorThickness.y;
-          if (doorPos.y < wallLen/2 - 3*doorThickness.y/2) doorPos.y -= wallRad;
+          if (doorPos.y < wallLen/2 - 3*doorThickness.y/2) doorPos.y -= wallRad.y;
           doorPos.z += doorRandZ;
           avoid[0].add(doorPos.x);
           avoid[1].add(doorPos.y);
@@ -75,30 +75,35 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
       
       float wallRand = -1;
       for (int i = 0; i < maxIter; i++) {
-        wallRand = random(pos.get(currentLayer % 4) + doorThickness.get(currentLayer % 4) + wallRad + padding, 
-                          pos.get(currentLayer % 4) + thickness.get(currentLayer % 4) - doorThickness.get(currentLayer % 4) - wallRad - padding);
+        wallRand = random(pos.get(currentLayer % 4) + doorThickness.get(currentLayer % 4) + wallRad.get(currentLayer % 4) + padding, 
+                          pos.get(currentLayer % 4) + thickness.get(currentLayer % 4) - doorThickness.get(currentLayer % 4) - wallRad.get(currentLayer % 4) - padding);
         
         boolean do_continue = false;
         for (int j = 0; j < avoid[currentLayer % 4].size(); j++) {
           //println(currentLayer%4, i, j, avoid[currentLayer % 4].get(j), wallRand, doorThickness.get(currentLayer % 4) + wallRad + padding, avoid[currentLayer % 4].get(j) + doorThickness.get(currentLayer % 4) + wallRad + padding > wallRand && 
           //    avoid[currentLayer % 4].get(j) - doorThickness.get(currentLayer % 4) - wallRad - padding < wallRand);
-          if (avoid[currentLayer % 4].get(j) + doorThickness.get(currentLayer % 4) + wallRad + padding > wallRand && 
-              avoid[currentLayer % 4].get(j) - doorThickness.get(currentLayer % 4) - wallRad - padding < wallRand) {
+          if (avoid[currentLayer % 4].get(j) + doorThickness.get(currentLayer % 4) + wallRad.get(currentLayer % 4) + padding > wallRand && 
+              avoid[currentLayer % 4].get(j) - doorThickness.get(currentLayer % 4) - wallRad.get(currentLayer % 4) - padding < wallRand) {
                 do_continue = true;
                 break;
               }
         }
-        if (i == maxIter - 1) return null;
+        if (i == maxIter - 1) return new donutRoom(pos, thickness);
         
         if (do_continue) continue;
-        
         
         break;
       }
 
-      tree.wall = new InnerWall(Vec4.copy(pos), Vec4.copy(thickness), colors[currentLayer % 4], currentLayer % 4, doorPos);
-      tree.wall.pos.set(currentLayer % 4, wallRand - wallRad);
-      tree.wall.thickness.set(currentLayer % 4, wallRad*2);
+      int variation = 30;
+      color new_color = color(
+        red(colors[currentLayer % 4]) + random(-variation, variation), 
+        green(colors[currentLayer % 4]) + random(-variation, variation), 
+        blue(colors[currentLayer % 4]) + random(-variation, variation)
+      );
+      tree.wall = new InnerWall(Vec4.copy(pos), Vec4.copy(thickness), new_color, currentLayer % 4, doorPos);
+      tree.wall.pos.set(currentLayer % 4, wallRand - wallRad.get(currentLayer % 4));
+      tree.wall.thickness.set(currentLayer % 4, wallRad.get(currentLayer % 4)*2);
 
       Vec4 leftThickness = Vec4.copy(thickness);
       Vec4 rightThickness = Vec4.copy(thickness);
@@ -131,7 +136,7 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
     println(e);
   }
   
-  return null;
+  return new donutRoom(pos, thickness);
 }
 
 public class KDTree {
@@ -161,26 +166,20 @@ public class KDTree {
   hitInfo collide(Vec4 playerPos) {
     hitInfo hit = new hitInfo();
     
-    if (wall != null) {
-      hitInfo wallHit = wall.collide(playerPos);
-      //println("w", wallHit.hit, wallHit.dir);
-      hit.hit |= wallHit.hit;
-      hit.dir = Vec4.add(hit.dir, wallHit.dir);
-      //println(0, hit.hit, hit.dir);
-    }
+    hitInfo wallHit = wall.collide(playerPos);
+    hit.hit |= wallHit.hit;
+    hit.dir = Vec4.add(hit.dir, wallHit.dir);
     
-    if (left != null  && left.isInside(playerPos)) {
+    if (left.isInside(playerPos)) {
       hitInfo leftHit = left.collide(playerPos);
       hit.hit |= leftHit.hit;
       hit.dir = Vec4.add(hit.dir, leftHit.dir);
-      //println(1, hit.hit, hit.dir);
     }
     
-    if (right != null && right.isInside(playerPos)) {
+    if (right.isInside(playerPos)) {
       hitInfo rightHit = right.collide(playerPos);
       hit.hit |= rightHit.hit;
       hit.dir = Vec4.add(hit.dir, rightHit.dir);
-      //println(2, hit.hit, hit.dir);
     }
     
     return hit;

@@ -9,14 +9,14 @@ class Player
 {
   public Player()
   {
-    position      = new Vec4( 480, 480, 480, 480 ); // initial position
+    position      = new Vec4( wallLen/2-playerRad, wallLen/2-playerRad, wallLen/2-playerRad, wallLen/2-playerRad ); // initial position
     velocity      = new Vec4(); // initial velocity
     theta         = 0.706; // rotation around Y axis. Starts with forward direction as ( 0, 0, -1 )
     phi           = 0.526; // rotation around X axis. Starts with up direction as ( 0, 1, 0 )
     moveSpeed     = 100;
-    jumpSpeed     = 100;
+    jumpSpeed     = 200;
     turnSpeed     = 3*PI/4; // radians/sec
-    boostSpeed    = 5;  // extra speed boost for when you press shift
+    boostSpeed    = 3;  // extra speed boost for when you press shift
     radius        = playerRad; // distance for collision
     
     // UI
@@ -55,7 +55,7 @@ class Player
     
     if (shiftPressed) moveSpeed *= boostSpeed;
     velocity.x = moveSpeed * (negativeMovement.x + positiveMovement.x);
-    velocity.y += gravity.y * dt; // The y axis is special and does not have a constant velocity
+    velocity.y += (gravity.y + jumpSpeed * (negativeMovement.y + positiveMovement.y)) * dt; // The y axis is special and does not have a constant velocity
     velocity.z = moveSpeed * (negativeMovement.z + positiveMovement.z);
     velocity.w = moveSpeed * (negativeMovement.w + positiveMovement.w);
     
@@ -68,13 +68,12 @@ class Player
     
     // Collision
     float boundingWall = wallLen/2 - radius;
-    if (position.y > boundingWall) velocity.y = 0;
+    if (position.y > boundingWall || position.y < -boundingWall) velocity.y = 0;
     if (position.x > boundingWall  || position.y > boundingWall  || position.z > boundingWall  || position.w > boundingWall || // Pos
         position.x < -boundingWall || position.y < -boundingWall || position.z < -boundingWall || position.w < -boundingWall    // Neg
         ) {
       position.clamp(-boundingWall, boundingWall);
     }
-    
     
     hitInfo hit = tree.collide(position);
     //println(hit.hit, hit.dir);
@@ -82,6 +81,7 @@ class Player
       position.add( hit.dir );
       if ( hit.dir.y != 0 ) velocity.y = 0;
     }
+    println(velocity.y);
     
     
     aspectRatio = width / (float) height;
@@ -95,6 +95,10 @@ class Player
   
   void Draw() {
     bar.Draw();
+    
+    //color warm = #f6cd8b;
+    //float intensity = 0.5;
+    //pointLight(red(warm)*intensity, green(warm)*intensity, blue(warm)*intensity, position.x, position.y, position.z);
   }
   
   // only need to change if you want difrent keys for the controls
@@ -106,9 +110,7 @@ class Player
     if ( key == 'a' || key == 'A' ) negativeMovement.x = -1; // Left
     if ( key == 'e' || key == 'E' ) positiveMovement.w = 1;  // Zig
     if ( key == 'q' || key == 'Q' ) negativeMovement.w = -1; // Zag
-    
-    //if ( key == ' ' && velocity.y == 0) velocity.y = -jumpSpeed; // Probably safe unless someone jumps at the exact apex of their arc
-    if ( key == ' ') velocity.y = -2*jumpSpeed;
+    if ( key == ' ')                negativeMovement.y = -1;  // Up
     
     if ( key == 'r' || key == 'R' ){
       //Player defaults = new Player();
@@ -138,6 +140,7 @@ class Player
     if ( key == 'a' || key == 'A' ) negativeMovement.x = 0;
     if ( key == 's' || key == 'S' ) negativeMovement.z = 0;
     if ( key == 'q' || key == 'Q' ) negativeMovement.w = 0;
+    if ( key == ' ')                negativeMovement.y = 0;
     
     if ( keyCode == LEFT  ) negativeTurn.x = 0;
     if ( keyCode == RIGHT ) positiveTurn.x = 0;

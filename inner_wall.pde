@@ -785,6 +785,7 @@ class InnerWall {
     
     switch (orien) {
       case 0:
+        PShape group = createShape(GROUP);
         if (w < (pos.w + thickness.w) && w > pos.w) {
           // Close to wall pos
           pushMatrix();
@@ -909,14 +910,14 @@ class InnerWall {
           pushMatrix();
           fill(c);
           noStroke();
-          translate(doorPos.x + doorThickness.x/2, doorPos.y + doorThickness.y/2 + padding/2, doorPos.z + doorThickness.z/2);
-          box(doorThickness.x, doorThickness.y + padding, doorThickness.z);
+          translate(doorPos.x + doorThickness.x/2, doorPos.y + doorThickness.y/2 + wallRad.y/2, doorPos.z + doorThickness.z/2);
+          box(doorThickness.x, doorThickness.y + wallRad.y, doorThickness.z);
           popMatrix();
         } else {
           // Door wireframe
           pushMatrix();
           noFill();
-          stroke(c);
+          stroke(wireframe);
           strokeWeight(wireframeWeight);
           translate(doorPos.x + doorThickness.x/2, doorPos.y + doorThickness.y/2, doorPos.z + doorThickness.z/2);
           box(doorThickness.x, doorThickness.y, doorThickness.z);
