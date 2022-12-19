@@ -46,11 +46,17 @@ class MenuCamera
     ui.Draw();
   }
   
-  //// only need to change if you want difrent keys for the controls
-  //void HandleKeyPressed()
-  //{
-  //  if ( key == 'p' || key == 'P' ) println(position, theta%(2*PI), phi%(2*PI));
-  //}
+  // Only for debugging
+  void HandleKeyPressed()
+  {
+    if ( key == 'z' ) theta += 0.1;
+    if ( key == 'x' ) theta += 0.01;
+    if ( key == 'c' ) theta += 0.001;
+    if ( key == 'Z' ) theta -= 0.1;
+    if ( key == 'X' ) theta -= 0.01;
+    if ( key == 'C' ) theta -= 0.001;
+    if ( key == 'p' || key == 'P' ) println(position, theta%(2*PI), phi%(2*PI));
+  }
   
   void HandleMousePressed() {
     ui.HandleMousePressed();
