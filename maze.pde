@@ -58,6 +58,7 @@ void setup()
 {
   size(1280, 720, P3D);
   smooth(8);
+  surface.setTitle("Donut Hell");
   
   tree = generate(maxLayers, corner, size);
   player = new Player(tree.numDonuts);
