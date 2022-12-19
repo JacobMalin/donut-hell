@@ -156,8 +156,14 @@ class MenuUI {
   
   void HandleMousePressed() {
     if (mouseX > buttonArea[0][0] && mouseX < buttonArea[0][2] && mouseY > buttonArea[0][1] && mouseY < buttonArea[0][3]) { // Start
-      //tree = generate(maxLayers, corner, size);
+      tree = generate(maxLayers, corner, size);
       player.donutsLeft = tree.numDonuts;
+      
+      Player defaults = new Player(1);
+      player.position = defaults.position;
+      player.theta = defaults.theta;
+      player.phi = defaults.phi;
+      
       scene = 1;
     } else if (mouseX > buttonArea[1][0] && mouseX < buttonArea[1][2] && mouseY > buttonArea[1][1] && mouseY < buttonArea[1][3]) { // Wireframe
       isWireframe = !isWireframe;
@@ -168,7 +174,6 @@ class MenuUI {
       else maxLayers = (complexity - 1) * 4 + 1;
       
       tree = generate(maxLayers, corner, size);
-      println(tree.numDonuts);
     }
   }
 }

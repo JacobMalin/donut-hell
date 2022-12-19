@@ -30,6 +30,7 @@ float menuWireframeWeight = 1;
 
 // UI Constants
 color UIColor = #6e6d74;
+color darkColor = color(10, 10, 10, 100);
 int UIStrokeWeight = 3;
 
 // Player constants
@@ -101,25 +102,28 @@ void draw() {
   
   if (scene == 0) {
     tree.Draw(menu.getW());
-    menu.Draw();
     wall.Draw();
+    menu.Draw();
   } else {
     tree.Draw(player.getW());
-    player.Draw();
     wall.Draw();
+    player.Draw();
   }
 }
 
 void keyPressed() {
-  player.HandleKeyPressed();
+  if (scene != 0) player.HandleKeyPressed();
+  
+  if (keyCode == ESC) key = 0; // Prevent close on escape
 }
 
 void keyReleased() {
-  player.HandleKeyReleased();
+  if (scene != 0) player.HandleKeyReleased();
 }
 
 void mousePressed() {
-  menu.HandleMousePressed();
+  if (scene == 0) menu.HandleMousePressed();
+  else player.HandleMousePressed();
 }
 
 

@@ -2,6 +2,9 @@
 
 class UI {
   Player p;
+  
+  float[] exitArea = {525, 327, 754, 363};
+  color exitColor;
 
   public UI(Player p) {
     this.p = p;
@@ -19,7 +22,9 @@ class UI {
     // Donut text
     Vec4 donutRel = new Vec4(10, -3.67, -7.2, 0);
     Vec4 donutDir = Vec4.add(Vec4.add(p.position, Vec4.mul(forwardDir, donutRel.x)), Vec4.add(Vec4.mul(upDir, donutRel.y), Vec4.mul(rightDir, donutRel.z)));
-    String donutText = "Donuts Left: " + p.donutsLeft;
+    String donutText;
+    if (p.donutsLeft <= 0) donutText = "You Won!";
+    else donutText = "Donuts Left: " + p.donutsLeft;
     pushMatrix();
     translate(donutDir.x, donutDir.y, donutDir.z);
     rotateY(p.theta);
@@ -80,6 +85,46 @@ class UI {
           popMatrix();
         }
       }
+    }
+    
+    if (scene == 2) {
+      // Gray box
+      Vec4 darkRel = new Vec4(10, 0, 0, 0);
+      Vec4 darkDir = Vec4.add(Vec4.add(p.position, Vec4.mul(forwardDir, darkRel.x)), Vec4.add(Vec4.mul(upDir, darkRel.y), Vec4.mul(rightDir, darkRel.z)));
+      pushMatrix();
+      translate(darkDir.x, darkDir.y, darkDir.z);
+      rotateY(p.theta);
+      rotateX(-p.phi);
+      fill(darkColor);
+      box(14.8, 9, 0.13);
+      popMatrix();
+      
+      // Exit
+      if (mouseX > exitArea[0] && mouseX < exitArea[2] && mouseY > exitArea[1] && mouseY < exitArea[3]) { // Exit
+        exitColor = textColor[1];
+      } else {
+        exitColor = textColor[0];
+      }
+      Vec4 exitRel = new Vec4(8, 0, 0, 0);
+      Vec4 exitDir = Vec4.add(Vec4.add(p.position, Vec4.mul(forwardDir, exitRel.x)), Vec4.add(Vec4.mul(upDir, exitRel.y), Vec4.mul(rightDir, exitRel.z)));
+      String exitText = "Exit to Menu";
+      pushMatrix();
+      translate(exitDir.x, exitDir.y, exitDir.z);
+      rotateY(p.theta);
+      rotateX(-p.phi);
+      fill(exitColor);
+      scale(0.0004);
+      textSize(1024);
+      textAlign(CENTER);
+      textMode(SHAPE);
+      text(exitText, 0, 0, 0);
+      popMatrix();
+    }
+  }
+  
+  void HandleMousePressed() {
+    if (mouseX > exitArea[0] && mouseX < exitArea[2] && mouseY > exitArea[1] && mouseY < exitArea[3]) { // Exit
+      scene = 0;
     }
   }
 }

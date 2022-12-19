@@ -250,7 +250,6 @@ class InnerWall {
                    dir.w < thickness.w + playerRad && dir.w > doorPos.w - pos.w + doorThickness.w - playerRad;
         
         hit.hit = topHit || bottomHit || closeHit || farHit || doorCloseHit || doorFarHit;
-        //println(hit.hit, topHit, bottomHit, closeHit, farHit, doorCloseHit, doorFarHit);
         
         if (hit.hit) {
           if (topHit) {

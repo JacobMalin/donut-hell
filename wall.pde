@@ -8,7 +8,7 @@ class Wall {
   }
   
   void Draw() {
-    int wallWidth = 0;
+    float wallWidth = 0;
     
     if (scene == 0) {
       // draw six cubes surrounding the origin (front, back, left, right, top, bottom)

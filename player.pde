@@ -11,8 +11,8 @@ class Player
   {
     position      = new Vec4( wallLen/2-playerRad, wallLen/2-playerRad, wallLen/2-playerRad, wallLen/2-playerRad ); // initial position
     velocity      = new Vec4(); // initial velocity
-    theta         = 0.706; // rotation around Y axis. Starts with forward direction as ( 0, 0, -1 )
-    phi           = 0.526; // rotation around X axis. Starts with up direction as ( 0, 1, 0 )
+    theta         = PI/4; // rotation around Y axis. Starts with forward direction as ( 0, 0, -1 )
+    phi           = 0.1; // rotation around X axis. Starts with up direction as ( 0, 1, 0 )
     moveSpeed     = 100;
     jumpSpeed     = 200;
     turnSpeed     = 3*PI/4; // radians/sec
@@ -60,10 +60,12 @@ class Player
     velocity.z = moveSpeed * (negativeMovement.z + positiveMovement.z);
     velocity.w = moveSpeed * (negativeMovement.w + positiveMovement.w);
     
-    position.add( Vec4.mul( rightDir,   velocity.x * dt ) );
-    position.add( Vec4.mul( upDir,      velocity.y * dt ) );
-    position.add( Vec4.mul( forwardDir, velocity.z * dt ) );
-    position.add( Vec4.mul( zagDir,     velocity.w * dt ) );
+    if (scene == 1) {
+      position.add( Vec4.mul( rightDir,   velocity.x * dt ) );
+      position.add( Vec4.mul( upDir,      velocity.y * dt ) );
+      position.add( Vec4.mul( forwardDir, velocity.z * dt ) );
+      position.add( Vec4.mul( zagDir,     velocity.w * dt ) );
+    }
     if (shiftPressed) moveSpeed /= boostSpeed;
 
     
@@ -86,7 +88,7 @@ class Player
     // Donut collision
     if (tree.donutCollide(position)) {
       donutsLeft--;
-      println("Donuts left:", donutsLeft);
+      //println("Donuts left:", donutsLeft);
     }
     //println(tree);
     
@@ -118,33 +120,59 @@ class Player
   // only need to change if you want difrent keys for the controls
   void HandleKeyPressed()
   {
-    if ( key == 'w' || key == 'W' ) positiveMovement.z = 1;  // Forward
-    if ( key == 's' || key == 'S' ) negativeMovement.z = -1; // Backwards
-    if ( key == 'd' || key == 'D' ) positiveMovement.x = 1;  // Right
-    if ( key == 'a' || key == 'A' ) negativeMovement.x = -1; // Left
-    if ( key == 'e' || key == 'E' ) positiveMovement.w = 1;  // Zig
-    if ( key == 'q' || key == 'Q' ) negativeMovement.w = -1; // Zag
-    if ( key == ' ')                negativeMovement.y = -1;  // Up
-    
-    if ( key == 'r' || key == 'R' ){
-      //Player defaults = new Player();
-      //position = defaults.position;
-      //theta = defaults.theta;
-      //phi = defaults.phi;
+    if (scene == 1) {
+      if ( key == 'w' || key == 'W' ) positiveMovement.z = 1;  // Forward
+      if ( key == 's' || key == 'S' ) negativeMovement.z = -1; // Backwards
+      if ( key == 'd' || key == 'D' ) positiveMovement.x = 1;  // Right
+      if ( key == 'a' || key == 'A' ) negativeMovement.x = -1; // Left
+      if ( key == 'e' || key == 'E' ) positiveMovement.w = 1;  // Zig
+      if ( key == 'q' || key == 'Q' ) negativeMovement.w = -1; // Zag
+      if ( key == ' ')                negativeMovement.y = -1;  // Up
       
-      tree = generate(maxLayers, corner, size);
+      //if ( key == 'r' || key == 'R' ){
+      //  //Player defaults = new Player();
+      //  //position = defaults.position;
+      //  //theta = defaults.theta;
+      //  //phi = defaults.phi;
+        
+      //  tree = generate(maxLayers, corner, size);
+        
+      //  donutsLeft = tree.numDonuts;
+      //}
       
-      donutsLeft = tree.numDonuts;
+      if ( keyCode == LEFT )  negativeTurn.x = 1;
+      if ( keyCode == RIGHT ) positiveTurn.x = -0.5;
+      if ( keyCode == UP )    positiveTurn.y = 0.5;
+      if ( keyCode == DOWN )  negativeTurn.y = -1;
+      
+      if ( keyCode == SHIFT ) shiftPressed = true;
+      
+      if ( keyCode == ESC ) {
+        key = 0;
+        scene = 2;
+        
+        positiveMovement.x = 0;
+        positiveMovement.y = 0;
+        positiveMovement.z = 0;
+        negativeMovement.x = 0;
+        negativeMovement.y = 0;
+        negativeMovement.z = 0;
+        
+        positiveTurn.x = 0;
+        positiveTurn.y = 0;
+        negativeTurn.x = 0;
+        negativeTurn.y = 0;
+        
+        shiftPressed = false;
+      }
+      
+      //if ( key == 'p' || key == 'P' ) println(position, theta, phi);
+    } else {
+      if ( keyCode == ESC ) {
+        key = 0;
+        scene = 1;
+      }
     }
-    
-    if ( keyCode == LEFT )  negativeTurn.x = 1;
-    if ( keyCode == RIGHT ) positiveTurn.x = -0.5;
-    if ( keyCode == UP )    positiveTurn.y = 0.5;
-    if ( keyCode == DOWN )  negativeTurn.y = -1;
-    
-    if ( keyCode == SHIFT ) shiftPressed = true;
-    
-    //if ( key == 'p' || key == 'P' ) println(position, theta, phi);
   }
   
   // only need to change if you want difrent keys for the controls
@@ -164,6 +192,10 @@ class Player
     if ( keyCode == DOWN  ) negativeTurn.y = 0;
     
     if ( keyCode == SHIFT ) shiftPressed = false;
+  }
+  
+  void HandleMousePressed() {
+    ui.HandleMousePressed();
   }
   
   // only necessary to change if you want different start position, orientation, or speeds

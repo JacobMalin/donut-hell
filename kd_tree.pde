@@ -133,15 +133,6 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
       tree.left = generate(maxLayers, currentLayer+1, Vec4.copy(pos), leftThickness, leftAvoid);
       tree.right = generate(maxLayers, currentLayer+1, rightPos, rightThickness, rightAvoid);
       
-      
-      if (currentLayer == 3) {
-        println(currentLayer);
-        println(wallRand);
-        println(leftAvoid);
-        println(tree.left.numDonuts);
-        println(rightAvoid);
-        println(tree.right.numDonuts);
-      }
       tree.numDonuts = tree.left.numDonuts + tree.right.numDonuts;
 
       return tree;
@@ -190,9 +181,10 @@ public class KDTree {
     if (isInsideNoW(playerPos)) {
       if (wall.orien == 3) {
         Vec4 dir = Vec4.sub(playerPos, wall.doorPos);
+        int buffer = 1;
         boolean isInDoorway =
           dir.x <= doorThickness.x - playerRad && dir.x >= playerRad &&
-          dir.y <= doorThickness.y - playerRad && dir.y >= playerRad &&
+          dir.y <= doorThickness.y - playerRad + buffer && dir.y >= playerRad - buffer &&
           dir.z <= doorThickness.z - playerRad && dir.z >= playerRad;
         
         if (isInDoorway) {
@@ -204,6 +196,7 @@ public class KDTree {
         }
       }
       
+      
       wallInfo[] leftInfo = left.getInfo(playerPos);
       if (leftInfo[0].diff < info[0].diff) info[0] = leftInfo[0];
       if (leftInfo[1].diff > info[1].diff) info[1] = leftInfo[1];
@@ -213,6 +206,7 @@ public class KDTree {
       if (rightInfo[0].diff < info[0].diff) info[0] = rightInfo[0];
       if (rightInfo[1].diff > info[1].diff) info[1] = rightInfo[1];
       if (rightInfo[2].exists)              info[2] = rightInfo[2];
+      println(leftInfo[2].pos, rightInfo[2].exists);
     }
     
     return info;
