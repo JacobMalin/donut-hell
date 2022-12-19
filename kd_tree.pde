@@ -118,6 +118,7 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
 
       Vec4 rightPos = Vec4.copy(tree.wall.pos);
       rightPos.set(currentLayer % 4, wallRand);
+      Vec4 leftPos = Vec4.copy(pos);
       
       ArrayList<Float>[] leftAvoid = new ArrayList[4];
       ArrayList<Float>[] rightAvoid = new ArrayList[4];
@@ -129,8 +130,20 @@ KDTree generate(int maxLayers, int currentLayer, Vec4 pos, Vec4 thickness, Array
           rightAvoid[i].add(avoid[i].get(j));
         }
       }
+      
+      //if (scene == 0) {
+      //  float moveWallsOut = 0;
+      //  if (currentLayer % 4 == 1) moveWallsOut = 5*1.3;
+      //  else if (currentLayer % 4 == 0 || currentLayer % 4 == 3) moveWallsOut = 5;
+        
+      //  leftPos.set(currentLayer % 4, leftPos.get(currentLayer % 4) + moveWallsOut);
+      //  leftThickness.set(currentLayer % 4, leftThickness.get(currentLayer % 4) - moveWallsOut*2);
+        
+      //  rightPos.set(currentLayer % 4, rightPos.get(currentLayer % 4) + moveWallsOut);
+      //  rightThickness.set(currentLayer % 4, rightThickness.get(currentLayer % 4) - moveWallsOut);
+      //}
 
-      tree.left = generate(maxLayers, currentLayer+1, Vec4.copy(pos), leftThickness, leftAvoid);
+      tree.left = generate(maxLayers, currentLayer+1, leftPos, leftThickness, leftAvoid);
       tree.right = generate(maxLayers, currentLayer+1, rightPos, rightThickness, rightAvoid);
       
       tree.numDonuts = tree.left.numDonuts + tree.right.numDonuts;
@@ -206,7 +219,6 @@ public class KDTree {
       if (rightInfo[0].diff < info[0].diff) info[0] = rightInfo[0];
       if (rightInfo[1].diff > info[1].diff) info[1] = rightInfo[1];
       if (rightInfo[2].exists)              info[2] = rightInfo[2];
-      println(leftInfo[2].pos, rightInfo[2].exists);
     }
     
     return info;

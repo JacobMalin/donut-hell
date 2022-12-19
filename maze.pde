@@ -112,8 +112,8 @@ void draw() {
 }
 
 void keyPressed() {
-  if (scene == 0) menu.HandleKeyPressed();
-  //if (scene != 0) player.HandleKeyPressed();
+  //if (scene == 0) menu.HandleKeyPressed();
+  if (scene != 0) player.HandleKeyPressed();
   
   if (keyCode == ESC) key = 0; // Prevent close on escape
 }
