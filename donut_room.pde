@@ -21,6 +21,8 @@ class donutRoom extends KDTree {
     return "donut(" + pos + "," + thickness + "," + isEaten + "," + donutPos + ")";
   }
   
+  wallInfo[] getInfo(Vec4 playerPos) {  wallInfo[] i = {new wallInfo(MAX_FLOAT), new wallInfo(MIN_FLOAT), new wallInfo(0)}; return i;  }
+  
   hitInfo collide(Vec4 playerPos) {
     hitInfo hit = new hitInfo();
     
@@ -28,10 +30,15 @@ class donutRoom extends KDTree {
   }
   
   boolean donutCollide(Vec4 playerPos) {
-    Vec4 dir = Vec4.sub(playerPos, donutPos);
-    dir.w = 0;
+    Vec4 dirDonut = Vec4.sub(playerPos, donutPos);
+    dirDonut.w = 0;
+    Vec4 dirKD = Vec4.sub(playerPos, pos);
     
-    if (!isEaten && dir.length() < donutRad + playerRad) {
+    boolean isNearby =
+      dirDonut.length() < donutRad + playerRad &&
+      dirKD.w < thickness.w + playerRad && dirKD.w > -playerRad;
+    
+    if (!isEaten && isNearby) {
       isEaten = true;
       return true;
     }

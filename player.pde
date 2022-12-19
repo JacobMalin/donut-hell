@@ -4,7 +4,6 @@
 // Modified.
 
 int epsilon = 10;
-int donutsLeft;
 
 class Player
 {
@@ -22,7 +21,7 @@ class Player
     donutsLeft    = numDonuts; // Number of donuts consumed
     
     // UI
-    bar = new Bar(this);
+    ui = new UI(this);
     
     // dont need to change these
     shiftPressed = false;
@@ -78,7 +77,6 @@ class Player
     }
     
     hitInfo hit = tree.collide(position);
-    //println(hit.hit, hit.dir);
     if (hit.hit) {
       position.add( hit.dir );
       if ( hit.dir.y != 0 ) velocity.y = 0;
@@ -103,12 +101,18 @@ class Player
   }
   
   void Draw() {
-    bar.Draw();
-    //println(position.x, position.y, position.z, position.w);
+    wallInfo[] info = tree.getInfo(position);
     
-    //color warm = #f6cd8b;
-    //float intensity = 0.5;
-    //pointLight(red(warm)*intensity, green(warm)*intensity, blue(warm)*intensity, position.x, position.y, position.z);
+    int outerWallConstant = 31;
+    
+    float zigWall = -wallLen/2.0 - outerWallConstant;
+    float zigDiff = position.w - zigWall;
+    if (!info[0].exists || zigDiff < info[0].diff) info[0] = new wallInfo(zigWall, zigDiff, wallColors[3]);
+    float zagWall = wallLen/2.0 + outerWallConstant;
+    float zagDiff = position.w - zagWall;
+    if (!info[1].exists || zagDiff > info[1].diff) info[1] = new wallInfo(zagWall, zagDiff, wallColors[3]);
+    
+    ui.Draw(info);
   }
   
   // only need to change if you want difrent keys for the controls
@@ -140,7 +144,7 @@ class Player
     
     if ( keyCode == SHIFT ) shiftPressed = true;
     
-    if ( key == 'p' || key == 'P' ) println(position, theta, phi);
+    //if ( key == 'p' || key == 'P' ) println(position, theta, phi);
   }
   
   // only need to change if you want difrent keys for the controls
@@ -172,9 +176,10 @@ class Player
   float turnSpeed;
   float boostSpeed;
   float radius;
+  int donutsLeft;
   
   // UI
-  Bar bar;
+  UI ui;
   
   // probably don't need / want to change any of the below variables
   float fovy;

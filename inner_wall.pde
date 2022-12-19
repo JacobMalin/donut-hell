@@ -1,5 +1,7 @@
 // inner_wall.pde
 
+float spacer = 0.1; // Prevent w walls from appearing when not inside
+
 class InnerWall {
   color c;
   Vec4 pos, thickness;
@@ -52,14 +54,14 @@ class InnerWall {
                    dir.x < thickness.x + playerRad && dir.x > -playerRad &&
                    dir.y < thickness.y + playerRad && dir.y > thickness.y - doorThickness.y - playerRad &&
                    dir.z < doorPos.z - pos.z + doorThickness.z + playerRad && dir.z > doorPos.z - pos.z - playerRad &&
-                   dir.w < doorPos.w - pos.w && dir.w > -playerRad;
+                   dir.w < doorPos.w - pos.w + playerRad && dir.w > -playerRad;
                    
         // Door far from pos
         doorFarHit =
                    dir.x < thickness.x + playerRad && dir.x > -playerRad &&
                    dir.y < thickness.y + playerRad && dir.y > thickness.y - doorThickness.y - playerRad &&
                    dir.z < doorPos.z - pos.z + doorThickness.z + playerRad && dir.z > doorPos.z - pos.z - playerRad &&
-                   dir.w < thickness.w + playerRad && dir.w > doorPos.w - pos.w + doorThickness.w;
+                   dir.w < thickness.w + playerRad && dir.w > doorPos.w - pos.w + doorThickness.w - playerRad;
         
         hit.hit = topHit || closeHit || farHit || doorCloseHit || doorFarHit;
         
@@ -154,7 +156,7 @@ class InnerWall {
             float[] dims = {
               playerPos.x - pos.x + playerRad, 
               thickness.x - playerPos.x + pos.x + playerRad,
-              doorPos.w - playerPos.w, // Pass this into bar
+              doorPos.w - playerPos.w + playerRad,
             };
             
             for (int i = 0; i < 3; i++) {
@@ -182,7 +184,7 @@ class InnerWall {
             float[] dims = {
               playerPos.x - pos.x + playerRad, 
               thickness.x - playerPos.x + pos.x + playerRad,
-              playerPos.w - doorPos.w - doorThickness.w, // Pass this into bar
+              playerPos.w - doorPos.w - doorThickness.w + playerRad,
             };
             
             for (int i = 0; i < 3; i++) {
@@ -238,14 +240,14 @@ class InnerWall {
                    dir.x < doorPos.x - pos.x + doorThickness.x - playerRad && dir.x > doorPos.x - pos.x + playerRad &&
                    dir.y < thickness.y + playerRad && dir.y > -playerRad &&
                    dir.z < doorPos.z - pos.z + doorThickness.z + playerRad && dir.z > doorPos.z - pos.z - playerRad &&
-                   dir.w < doorPos.w - pos.w && dir.w > -playerRad;
+                   dir.w < doorPos.w - pos.w + playerRad && dir.w > -playerRad;
                    
         // Door far from pos
         doorFarHit =
                    dir.x < doorPos.x - pos.x + doorThickness.x - playerRad && dir.x > doorPos.x - pos.x + playerRad &&
                    dir.y < thickness.y + playerRad && dir.y > -playerRad &&
                    dir.z < doorPos.z - pos.z + doorThickness.z + playerRad && dir.z > doorPos.z - pos.z - playerRad &&
-                   dir.w < thickness.w + playerRad && dir.w > doorPos.w - pos.w + doorThickness.w;
+                   dir.w < thickness.w + playerRad && dir.w > doorPos.w - pos.w + doorThickness.w - playerRad;
         
         hit.hit = topHit || bottomHit || closeHit || farHit || doorCloseHit || doorFarHit;
         //println(hit.hit, topHit, bottomHit, closeHit, farHit, doorCloseHit, doorFarHit);
@@ -369,7 +371,7 @@ class InnerWall {
             float[] dims = {
               playerPos.y - pos.y + playerRad, 
               thickness.y - playerPos.y + pos.y + playerRad,
-              doorPos.w - playerPos.w, // Pass this into bar
+              doorPos.w - playerPos.w + playerRad, // Pass this into bar
             };
             
             for (int i = 0; i < 3; i++) {
@@ -397,7 +399,7 @@ class InnerWall {
             float[] dims = {
               playerPos.y - pos.y + playerRad, 
               thickness.y - playerPos.y + pos.y + playerRad,
-              playerPos.w - doorPos.w - doorThickness.w, // Pass this into bar
+              playerPos.w - doorPos.w - doorThickness.w + playerRad, // Pass this into bar
             };
             
             for (int i = 0; i < 3; i++) {
@@ -446,14 +448,14 @@ class InnerWall {
                    dir.x < doorPos.x - pos.x + doorThickness.x + playerRad && dir.x > doorPos.x - pos.x - playerRad &&
                    dir.y < thickness.y + playerRad && dir.y > thickness.y - doorThickness.y - playerRad &&
                    dir.z < thickness.z + playerRad && dir.z > -playerRad &&
-                   dir.w < doorPos.w - pos.w && dir.w > -playerRad;
+                   dir.w < doorPos.w - pos.w + playerRad && dir.w > -playerRad;
                    
         // Door far from pos
         doorFarHit = 
                    dir.x < doorPos.x - pos.x + doorThickness.x + playerRad && dir.x > doorPos.x - pos.x - playerRad &&
                    dir.y < thickness.y + playerRad && dir.y > thickness.y - doorThickness.y - playerRad &&
                    dir.z < thickness.z + playerRad && dir.z > -playerRad &&
-                   dir.w < thickness.w + playerRad && dir.w > doorPos.w - pos.w + doorThickness.w;
+                   dir.w < thickness.w + playerRad && dir.w > doorPos.w - pos.w + doorThickness.w - playerRad;
         
         hit.hit = topHit || closeHit || farHit || doorCloseHit || doorFarHit;
         
@@ -547,7 +549,7 @@ class InnerWall {
             float[] dims = {
               playerPos.z - pos.z + playerRad, 
               thickness.z - playerPos.z + pos.z + playerRad,
-              doorPos.w - playerPos.w, // Pass this into bar
+              doorPos.w - playerPos.w + playerRad, // Pass this into bar
             };
             
             for (int i = 0; i < 3; i++) {
@@ -575,7 +577,7 @@ class InnerWall {
             float[] dims = {
               playerPos.z - pos.z + playerRad, 
               thickness.z - playerPos.z + pos.z + playerRad,
-              playerPos.w - doorPos.w - doorThickness.w, // Pass this into bar
+              playerPos.w - doorPos.w - doorThickness.w + playerRad, // Pass this into bar
             };
             
             for (int i = 0; i < 3; i++) {
@@ -725,8 +727,8 @@ class InnerWall {
             int dim = -1;
             float[] dims = {
               doorPos.x - playerPos.x + playerRad,
-              playerPos.w - pos.w + playerRad, // Pass this into bar
-              thickness.w - playerPos.w + pos.w + playerRad, // Pass this into bar
+              playerPos.w - pos.w + playerRad,
+              thickness.w - playerPos.w + pos.w + playerRad,
             };
             
             for (int i = 0; i < 3; i++) {
@@ -753,8 +755,8 @@ class InnerWall {
             int dim = -1;
             float[] dims = {
               playerPos.x - doorPos.x - doorThickness.x + playerRad,
-              playerPos.w - pos.w + playerRad, // Pass this into bar
-              thickness.w - playerPos.w + pos.w + playerRad, // Pass this into bar
+              playerPos.w - pos.w + playerRad,
+              thickness.w - playerPos.w + pos.w + playerRad,
             };
             
             for (int i = 0; i < 3; i++) {
@@ -788,7 +790,6 @@ class InnerWall {
     
     switch (orien) {
       case 0:
-        PShape group = createShape(GROUP);
         if (w < (pos.w + thickness.w) && w > pos.w) {
           // Close to wall pos
           pushMatrix();
@@ -811,12 +812,14 @@ class InnerWall {
           box(thickness.x, doorPos.y - pos.y, doorThickness.z);
           popMatrix();
           
-          if (w > (doorPos.w + doorThickness.w) || w < doorPos.w) {
+          if (w > (doorPos.w + doorThickness.w - playerRad) || w < doorPos.w + playerRad) {
             // Door
             pushMatrix();
             fill(c);
-            stroke(wireframe);
-            strokeWeight(wireframeWeight);
+            if (isWireframe) stroke(wireframe);
+            else noStroke();
+            if (scene == 0) strokeWeight(menuWireframeWeight);
+            else strokeWeight(wireframeWeight);
             translate(pos.x + thickness.x/2, doorPos.y + doorThickness.y/2, doorPos.z + doorThickness.z/2);
             box(thickness.x, doorThickness.y, doorThickness.z);
             popMatrix();
@@ -856,12 +859,14 @@ class InnerWall {
           popMatrix();
             
           
-          if (w > (doorPos.w + doorThickness.w) || w < doorPos.w) {
+          if (w > (doorPos.w + doorThickness.w - playerRad) || w < doorPos.w + playerRad) {
             // Door
             pushMatrix();
             fill(c);
-            stroke(wireframe);
-            strokeWeight(wireframeWeight);
+            if (isWireframe) stroke(wireframe);
+            else noStroke();
+            if (scene == 0) strokeWeight(menuWireframeWeight);
+            else strokeWeight(wireframeWeight);
             translate(doorPos.x + doorThickness.x/2, pos.y + thickness.y/2, doorPos.z + doorThickness.z/2);
             box(doorThickness.x, thickness.y, doorThickness.z);
             popMatrix();
@@ -893,12 +898,14 @@ class InnerWall {
           box(doorThickness.x, doorPos.y - pos.y, thickness.z);
           popMatrix();
           
-          if (w > (doorPos.w + doorThickness.w) || w < doorPos.w) {
+          if (w > (doorPos.w + doorThickness.w - playerRad) || w < doorPos.w + playerRad) {
             // Door
             pushMatrix();
             fill(c);
-            stroke(wireframe);
-            strokeWeight(wireframeWeight);
+            if (isWireframe) stroke(wireframe);
+            else noStroke();
+            if (scene == 0) strokeWeight(menuWireframeWeight);
+            else strokeWeight(wireframeWeight);
             translate(doorPos.x + doorThickness.x/2, doorPos.y + doorThickness.y/2, pos.z + thickness.z/2);
             box(doorThickness.x, doorThickness.y, thickness.z);
             popMatrix();
@@ -908,7 +915,7 @@ class InnerWall {
         }
         break;
       case 3:
-        if (w < (pos.w + thickness.w) && w > pos.w) {
+        if (w < (pos.w + thickness.w + playerRad - spacer) && w > pos.w - playerRad + spacer) {
           // Door box
           pushMatrix();
           fill(c);
@@ -916,12 +923,23 @@ class InnerWall {
           translate(doorPos.x + doorThickness.x/2, doorPos.y + doorThickness.y/2 + wallRad.y/2, doorPos.z + doorThickness.z/2);
           box(doorThickness.x, doorThickness.y + wallRad.y, doorThickness.z);
           popMatrix();
-        } else if (w < (KDPos.w + KDThickness.w) && w > KDPos.w) {
+          
+          if (scene == 0) {
+            // Wall box
+            pushMatrix();
+            fill(c);
+            noStroke();
+            translate(KDPos.x + KDThickness.x/2, KDPos.y + KDThickness.y/2 + wallRad.y/2, KDPos.z + KDThickness.z/2);
+            box(KDThickness.x, KDThickness.y + wallRad.y, KDThickness.z);
+            popMatrix();
+          }
+        } else if (w < (KDPos.w + KDThickness.w) && w > KDPos.w && isWireframe) {
           // Door wireframe
           pushMatrix();
           noFill();
           stroke(wireframe);
-          strokeWeight(wireframeWeight);
+          if (scene == 0) strokeWeight(menuWireframeWeight);
+          else strokeWeight(wireframeWeight);
           translate(doorPos.x + doorThickness.x/2, doorPos.y + doorThickness.y/2, doorPos.z + doorThickness.z/2);
           box(doorThickness.x, doorThickness.y, doorThickness.z);
           popMatrix();
