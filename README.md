@@ -41,7 +41,7 @@ https://media.github.umn.edu/user/19560/files/5c7a7a32-d45c-47a5-9a02-01126932d6
 </p>
 
 <p align="center">
-    <em>figure 1: inital sketch </em>
+    <em>figure 1: initial sketch </em>
 </p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The core idea for the fourth dimension is already present in this early sketch as the hole in the wall develops as the user moves along the fourth dimension. At this point, we had some sense that a wall in the w plane should be a cube but it was not clear how the user would interact with this kind of wall. 
@@ -54,7 +54,7 @@ https://media.github.umn.edu/user/19575/files/5c42b11c-105a-4d5a-96e8-4a80d18229
     <em>video 2: tree but no kd-tree </em>
 </p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; At this point, we decided a UI bar would be the best way to communicate to the user where they were in the w axis. as shown in figure 2. The code was still very underdeveloped at this point, any object that appeared on the screen was coded directly, the collision was not general and the KD-tree was still not present. There was a real tree there though that calls back to an earlier idea we had to make a scene that morphs into another scene. At this point, jumping was the way to move along the y-axis and we had planned for ladders to spawn for the player to climb.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; At this point, we decided a UI bar would be the best way to communicate to the user where they were in the w axis, as shown in figure 2. The code was still very underdeveloped at this point, any object that appeared on the screen was coded directly, the collision was not general and the KD-tree was still not present. There was a real tree there though that calls back to an earlier idea we had to make a scene that morphs into another scene. At this point, jumping was the way to move along the y-axis and we had planned for ladders to spawn for the player to climb.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The UI bar was especially difficult to implement, as we had to figure out a way to display objects in front of the camera that moved with the camera and also rotated with the camera. After a lot of trial and error, we realised that the rotation code could be adapted directly from the camera’s rotation code, which helped us reach a solution much faster. At this point each object on the UI bar was hard-coded, we abstract our rotation math much later.
 
@@ -63,22 +63,22 @@ https://media.github.umn.edu/user/19575/files/5c42b11c-105a-4d5a-96e8-4a80d18229
 </p>
 
 <p align="center">
-    <em>figure 2: w-axis UI bar </em>
+    <em>figure 2: the w-axis UI bar </em>
 </p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A later progress report (Video 3) shows wall generation and motion through a w-door. Though it looks very close to the final product collision at this point had still not been established. Lots of things from this stage did make it to the final product including door frames and ambient lighting. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A later progress report (Video 3) shows wall generation and motion through a w-doorway. Though it looks very close to the final product, collision at this point had still not been fully implemented. Lots of things from this stage did make it to the final product including door frames and the multi colored walls. We did also at this stage attempt to implement point lights to make it more obvious where the player was in relation to the scenery, however becuase of how the walls are drawn as multiple boxes, this was near impossible with processing’s limitations, so we stuck with ambient lighting.
 
 
 https://media.github.umn.edu/user/19575/files/085c7d11-b93c-4c9e-89ae-2de83c641eac
 
 
 <p align="center">
-    <em>video 3: movment through doors and w-doors </em>
+    <em>video 3: movement through doors and w-doors </em>
 </p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The hardest parts of making progress were not what we expected. Many hours went into developing collisions on the inside of doorways whereas walls and doors in the fourth dimension ended up being a simple variation of code from the other directions. The kd-tree ended up nicely extrapolating into more dimensions but we several times got stuck trying to debug issues of deep and shallow copying. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The hardest parts of making progress were not what we expected. Many hours went into developing collisions on the inside of doorways whereas walls and doors in the fourth dimension ended up being a simple variation of code from the other dimensions. The kd-tree ended up nicely extrapolating into more dimensions but we several times got stuck trying to debug issues of deep and shallow copying.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Our plan for the features we wanted to include in the maze evolved during its development. Originally we wanted the user to spawn in one corner of the world and the donut to spawn in the other, however, in the end, we decided to spawn donuts in every room so the user is incentivized to explore more of the environment. Door frames were added at some point in development so users could predict where the door will open while still maintaining the monochrome wall. W-walls were added to the ui bar so the user would know how much of the w-space was available to them. And a title and win screen were added to make the maze feel more like a game.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Our plan for the features we wanted to include in the maze evolved during its development. Originally we wanted the user to spawn in one corner of the world and a singular donut to spawn in the other, however, in the end, we decided to spawn donuts in every room so the user is incentivized to explore more of the environment. Door frames were added at some point in development so users could predict where the door will open while still maintaining the monochrome wall, this was done to indicate that the walls are a continuous solid and there is actually nothing special about where the doorway was going to appear. W-walls were added to the ui bar so the user would know how much of the w-space was available to them. As well, only the closest w-walls are displayed to give the user limited visiblilty into the w-axis just like the other dimensions. Similarly, when standing in a w-doorway, the next closest w-wall is displayed since the user is “looking” through the doorway. And a title menu and escape menu were added to make the maze feel more like a game.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Still more ideas ended up going unimplemented because they were deprioritized. At points in development, we proposed a screen morphing effect as the user moves in w, roguelike elements such as monsters and traps, and arrows pointing the user to the closest donut.
 
