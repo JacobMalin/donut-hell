@@ -1,4 +1,4 @@
-# CSCI-5611-Project-4 - Final Project Report
+# CSCI 5611 Project 4 - Final Project Report
 
 By: Michael Cauthorn (cauth006), Jacob Malin (malin146)
 
