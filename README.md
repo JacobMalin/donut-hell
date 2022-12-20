@@ -34,7 +34,7 @@ https://media.github.umn.edu/user/19560/files/5c7a7a32-d45c-47a5-9a02-01126932d6
 
 ## Progress 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; At the very beginning of the project, we were not sure what the final state would look like. At some point, we decided we wanted to try and represent a fourth spacial dimension and that a kd-tree could be extended to work in an arbitrary number of dimensions. An initial sketch of the project can be seen in figure 1 below. (In which the figure is inacurately notated with zap and zip.)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; At the very beginning of the project, we were not sure what the final state would look like. This is beacuse we wanted to try and represent a fourth spacial dimension in a way that is logically consistent with the other dimensions, and similarly a kd-tree could be extended to work in an arbitrary number of dimensions. An initial sketch of the project can be seen in figure 1 below. (In which the figure is inacurately notated with zap and zip, where correctly zig is the “left” of the w-axis and zag is the “right”.)
 
 <p align="center">
   <img width="550" alt="initial sketch" src="https://media.github.umn.edu/user/19575/files/c8fc3c8d-bfab-40fc-a311-0b5b3d25af66">  
