@@ -108,7 +108,7 @@ https://media.github.umn.edu/user/19575/files/085c7d11-b93c-4c9e-89ae-2de83c641e
 
 1. [Matsumoto and Ogawa's paper on 4D rotation animation](https://www.math.kyoto-u.ac.jp/~kaji/papers/SIGGRAPH2019_Polyvision_final.pdf)
 1. [Weeks's work on 4D games](http://geometrygames.org/)
-1. The provided Camera by Liam Tyler was used as the base for menu_camera.pde and player.pde, as well as the rotation math for menu_ui.pde and ui.pde
+1. The provided Camera by Liam Tyler was used as the base for menu_camera.pde and player.pde, and the rotation math was used for menu_ui.pde and ui.pde
 1. The provided Vec3 library was adapted into a Vec4 library
 
 
