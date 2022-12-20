@@ -69,8 +69,8 @@ void setup()
   //donut = load();
   PShape frosting, dough;
   donut = createShape(GROUP);
-  frosting = loadShape("assets/donut/frosting.obj");
-  dough = loadShape("assets/donut/dough.obj");
+  frosting = loadShape("data/assets/donut/frosting.obj");
+  dough = loadShape("data/assets/donut/dough.obj");
   frosting.setFill(pink);
   dough.setFill(tanBrown);
   donut.addChild(frosting);
