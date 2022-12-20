@@ -46,9 +46,7 @@ https://media.github.umn.edu/user/19560/files/5c7a7a32-d45c-47a5-9a02-01126932d6
 
 In the next progress report, we had a very basic scene implemented. Video 2 shows a tree that comes in and out of view as the player moves in w. 
 
-<p align="center">
 https://media.github.umn.edu/user/19575/files/5c42b11c-105a-4d5a-96e8-4a80d1822966
-</p>
 
 <p align="center">
     <em>Video 2: tree but no kd-tree </em>
