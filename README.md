@@ -56,6 +56,8 @@ https://media.github.umn.edu/user/19575/files/5c42b11c-105a-4d5a-96e8-4a80d18229
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; At this point, we decided a UI bar would be the best way to communicate to the user where they were in the w axis. as shown in figure 2. The code was still very underdeveloped at this point, any object that appeared on the screen was coded directly, the collision was not general and the KD-tree was still not present. There was a real tree there though that calls back to an earlier idea we had to make a scene that morphs into another scene. At this point, jumping was the way to move along the y-axis and we had planned for ladders to spawn for the player to climb.
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The UI bar was especially difficult to implement, as we had to figure out a way to display objects in front of the camera that moved with the camera and also rotated with the camera. After a lot of trial and error, we realised that the rotation code could be adapted directly from the camera’s rotation code, which helped us reach a solution much faster. At this point each object on the UI bar was hard-coded, we abstract our rotation math much later.
+
 <p align="center">
   <img width="527" alt="3d1" src="https://media.github.umn.edu/user/19575/files/add1a0cc-c8de-4b8b-908d-999540178864"> 
 </p>
