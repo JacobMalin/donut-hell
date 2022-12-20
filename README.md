@@ -66,12 +66,12 @@ https://media.github.umn.edu/user/19575/files/5c42b11c-105a-4d5a-96e8-4a80d18229
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A later progress report (Video 3) shows wall generation and motion through a w-door. Though it looks very close to the final product collision at this point had still not been established. Lots of things from this stage did make it to the final product including door frames and ambient lighting. 
 
-<p align="center">
+
 https://media.github.umn.edu/user/19575/files/085c7d11-b93c-4c9e-89ae-2de83c641eac
-</p>
+
 
 <p align="center">
-    <em>Video 3: movment through doors and w-doors </em>
+    <em>video 3: movment through doors and w-doors </em>
 </p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The hardest parts of making progress were not what we expected. Many hours went into developing collisions on the inside of doorways whereas walls and doors in the fourth dimension ended up being a simple variation of code from the other directions. The kd-tree ended up nicely extrapolating into more dimensions but we several times got stuck trying to debug issues of deep and shallow copying. 
