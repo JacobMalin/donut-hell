@@ -91,7 +91,7 @@ https://media.github.umn.edu/user/19575/files/085c7d11-b93c-4c9e-89ae-2de83c641e
 
 ## Relation to state-of-the-art
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Matsumoto and Ogawa^1^ recently released a paper detailing the state of the art for 4-d animation. They cross-referenced many different ways of making a 4-d interactive and presented their own approach with 4 screens displaying space from any choice of 3 of the 4 dimensions. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Matsumoto and Ogawa ^1^ recently released a paper detailing the state of the art for 4-d animation. They cross-referenced many different ways of making a 4-d interactive and presented their own approach with 4 screens displaying space from any choice of 3 of the 4 dimensions. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Like Matsumoto and Ogawa^1 we created a 4-d scene for the user to explore from the first person. However, in our implementation, the user can never see a different choice of axes in the same way they see along x,y, z space. Instead, the bar at the bottom of the user's screen communicates to them where they are in w-space in a much more compact, if less abounding, manner. 
 
